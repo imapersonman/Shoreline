@@ -8,7 +8,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="BottombarItem" customModule="Shoreline" customModuleProvider="target">
             <connections>
-                <outlet property="labelField" destination="bnK-Fq-VcT" id="AkZ-bQ-s1l"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -23,20 +22,6 @@
                     <view key="contentView" id="Skh-As-nOC">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bnK-Fq-VcT">
-                                <rect key="frame" x="221" y="128" width="37" height="17"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="Gfe-HP-Dwe">
-                                    <font key="font" usesAppearanceFont="YES"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="bnK-Fq-VcT" firstAttribute="centerY" secondItem="Skh-As-nOC" secondAttribute="centerY" id="VlF-W3-wJL"/>
-                            <constraint firstItem="bnK-Fq-VcT" firstAttribute="centerX" secondItem="Skh-As-nOC" secondAttribute="centerX" id="dth-RL-86U"/>
-                        </constraints>
                     </view>
                     <color key="fillColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                 </box>

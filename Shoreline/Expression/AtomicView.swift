@@ -17,7 +17,7 @@ class AtomicView: ExpressionView {
         self.layoutCustom()
     }
     
-    convenience init(text: String) {
+    convenience init(_ text: String) {
         self.init(origin: NSPoint.zero, text: text)
     }
     
@@ -32,6 +32,12 @@ class AtomicView: ExpressionView {
         
         // Don't worry bout it performance doesn't matter
         self.setNeedsDisplay(self.frame)
+    }
+    
+    override func asModel() -> ExpressionModel {
+        let atomic = AtomicModel(self.text)
+        atomic.setSelectionIndex(self.getSelectionIndex())
+        return atomic
     }
     
     required init?(coder decoder: NSCoder) {

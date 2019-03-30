@@ -11,6 +11,7 @@ import Cocoa
 class PlusView: ExpressionView {
     var expressions = [ExpressionView]()
     var plusWidth: CGFloat = 0
+    var selectionBoxes = [NSBox]()
     
     init(origin: NSPoint, list: [ExpressionView]) {
         let frame = NSRect(origin: origin, size: NSSize.zero)
@@ -23,12 +24,42 @@ class PlusView: ExpressionView {
         self.layoutCustom()
     }
     
+    convenience init(list: [ExpressionView]) {
+        self.init(origin: NSPoint.zero, list: list)
+    }
+    
     override func getExpressionSubviews() -> [ExpressionView]? {
         if expressions.count > 0 {
             return self.expressions
         } else {
             return [ExpressionView]?.none
         }
+    }
+    
+    override func setSelectionIndex(_ selectionIndex: Int, rangeSelected: (Int, Int)) {
+        super.setSelectionIndex(selectionIndex, rangeSelected: rangeSelected)
+        if rangeSelected.0 < 0 || rangeSelected.0 >= self.expressions.count
+            || rangeSelected.1 < rangeSelected.0 || rangeSelected.1 >= self.expressions.count {
+            print("We're all going to die thanks to you. Great")
+            exit(-1) // For now
+        }
+        
+        var selectionFrame = NSRect(origin: self.expressions[rangeSelected.0].frame.origin, size: NSSize.zero)
+        
+        for index in rangeSelected.0...rangeSelected.1 {
+            let view = self.expressions[index]
+            if selectionFrame.height < view.frame.height {
+                selectionFrame.size.height = view.frame.height
+            }
+            selectionFrame.size.width += view.frame.width
+            if index != rangeSelected.1 - 1 {
+                selectionFrame.size.width += self.plusWidth
+            }
+        }
+        self.box.frame = selectionFrame
+        
+        let color = ExpressionView.getColorForSelectionIndex(selectionIndex)
+        let newBox = ExpressionView.createBorderBox(color: color, frame: selectionFrame)
     }
     
     // I should override layout, but I don't want to break auto-layout just yet
@@ -41,6 +72,7 @@ class PlusView: ExpressionView {
         
         for index in 0...self.expressions.count - 1 {
             let view = self.expressions[index]
+            view.setChildIndex(index)
             view.setFontSize(size: self.fontSize)
             view.frame.origin = NSPoint(x: currentX, y: 0)
             self.addSubview(view)
@@ -68,6 +100,18 @@ class PlusView: ExpressionView {
         
         // Don't worry bout it performance doesn't matter
         self.setNeedsDisplay(self.frame)
+    }
+    
+    override func asModel() -> ExpressionModel {
+        var list = [ExpressionModel]()
+        if let subs = self.getExpressionSubviews() {
+            for sub in subs {
+                list.append(sub.asModel())
+            }
+        }
+        let plus = PlusModel(list)
+        plus.setSelectionIndex(self.getSelectionIndex())
+        return plus
     }
     
     required init?(coder decoder: NSCoder) {

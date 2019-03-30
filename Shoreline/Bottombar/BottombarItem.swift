@@ -9,14 +9,31 @@
 import Cocoa
 
 class BottombarItem: NSCollectionViewItem {
-    @IBOutlet weak var labelField: NSTextField!
+    var topExpression: ExpressionView?
+    var bottomExpression: ExpressionView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
     
-    func setLabelText(text: String) {
-        self.labelField.stringValue = text;
+    func setExpressions(top: ExpressionModel, bottom: ExpressionModel) {
+        let fontSize: CGFloat = 16
+        
+        self.topExpression?.removeFromSuperview()
+        self.topExpression = top.asView()
+        self.topExpression?.setFontSize(size: fontSize)
+        self.topExpression!.frame.origin.y = self.view.frame.height * 3 / 4.0 - self.topExpression!.frame.height / 2
+        self.topExpression!.frame.origin.x = self.view.frame.width / 2 - self.topExpression!.frame.width / 2
+        self.topExpression?.layoutCustom()
+        self.view.addSubview(self.topExpression!)
+        
+        self.bottomExpression?.removeFromSuperview()
+        self.bottomExpression = bottom.asView()
+        self.bottomExpression?.setFontSize(size: fontSize)
+        self.bottomExpression!.frame.origin.y = self.view.frame.height / 4.0 - self.bottomExpression!.frame.height / 2
+        self.bottomExpression!.frame.origin.x = self.view.frame.width / 2 - self.bottomExpression!.frame.width / 2
+        self.bottomExpression?.layoutCustom()
+        self.view.addSubview(self.bottomExpression!)
     }
 }
