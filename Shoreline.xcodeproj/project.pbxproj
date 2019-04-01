@@ -28,6 +28,7 @@
 		92C74A882246CBD500AC360E /* AtomicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C74A872246CBD500AC360E /* AtomicModel.swift */; };
 		92EFED05224D9E32005E7909 /* PatternModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EFED03224D9E32005E7909 /* PatternModel.swift */; };
 		92EFED06224D9E32005E7909 /* PatternView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EFED04224D9E32005E7909 /* PatternView.swift */; };
+		92EFED0C2252BDE9005E7909 /* SourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EFED0B2252BDE9005E7909 /* SourceModel.swift */; };
 		92F9744522345BE100C3AD04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F9744422345BE100C3AD04 /* AppDelegate.swift */; };
 		92F9744722345BE100C3AD04 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F9744622345BE100C3AD04 /* ViewController.swift */; };
 		92F9744922345BE600C3AD04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92F9744822345BE600C3AD04 /* Assets.xcassets */; };
@@ -75,6 +76,7 @@
 		92C74A872246CBD500AC360E /* AtomicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicModel.swift; sourceTree = "<group>"; };
 		92EFED03224D9E32005E7909 /* PatternModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatternModel.swift; sourceTree = "<group>"; };
 		92EFED04224D9E32005E7909 /* PatternView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatternView.swift; sourceTree = "<group>"; };
+		92EFED0B2252BDE9005E7909 /* SourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceModel.swift; sourceTree = "<group>"; };
 		92F9744122345BE100C3AD04 /* Shoreline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shoreline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92F9744422345BE100C3AD04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		92F9744622345BE100C3AD04 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -157,18 +159,35 @@
 		920443E2223D523200F188D5 /* Expression */ = {
 			isa = PBXGroup;
 			children = (
-				920443F1223D62B600F188D5 /* PlusView.swift */,
-				92428B6D223D879B000E26CA /* RationalView.swift */,
-				92428B6F223DA6BB000E26CA /* AtomicView.swift */,
-				92A52CFB223DB0A4006473E5 /* ExpressionView.swift */,
-				92C74A872246CBD500AC360E /* AtomicModel.swift */,
+				92EFED0A2252BD8D005E7909 /* View */,
+				92EFED092252BD7F005E7909 /* Model */,
+			);
+			path = Expression;
+			sourceTree = "<group>";
+		};
+		92EFED092252BD7F005E7909 /* Model */ = {
+			isa = PBXGroup;
+			children = (
 				92A3E5DA2246CECC00C8571B /* ExpressionModel.swift */,
+				92EFED0B2252BDE9005E7909 /* SourceModel.swift */,
+				92C74A872246CBD500AC360E /* AtomicModel.swift */,
 				92A3E5DC2246CF3100C8571B /* RationalModel.swift */,
 				92A3E5DE2246D5D900C8571B /* PlusModel.swift */,
 				92EFED03224D9E32005E7909 /* PatternModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		92EFED0A2252BD8D005E7909 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				92A52CFB223DB0A4006473E5 /* ExpressionView.swift */,
+				92428B6F223DA6BB000E26CA /* AtomicView.swift */,
+				92428B6D223D879B000E26CA /* RationalView.swift */,
+				920443F1223D62B600F188D5 /* PlusView.swift */,
 				92EFED04224D9E32005E7909 /* PatternView.swift */,
 			);
-			path = Expression;
+			path = View;
 			sourceTree = "<group>";
 		};
 		92F9743822345BE000C3AD04 = {
@@ -375,6 +394,7 @@
 				92A3E5DD2246CF3100C8571B /* RationalModel.swift in Sources */,
 				920443D322371CFF00F188D5 /* BottombarViewController.swift in Sources */,
 				92428B6E223D879B000E26CA /* RationalView.swift in Sources */,
+				92EFED0C2252BDE9005E7909 /* SourceModel.swift in Sources */,
 				92F9744722345BE100C3AD04 /* ViewController.swift in Sources */,
 				92F9744522345BE100C3AD04 /* AppDelegate.swift in Sources */,
 				920443DB2239510400F188D5 /* MainViewController.swift in Sources */,

@@ -28,16 +28,9 @@ class AtomicView: ExpressionView {
         field.sizeToFit()
         self.addSubview(field)
         self.frame.size = NSSize(width: field.frame.width, height: field.frame.height)
-        self.box.frame.size = self.frame.size
         
         // Don't worry bout it performance doesn't matter
         self.setNeedsDisplay(self.frame)
-    }
-    
-    override func asModel() -> ExpressionModel {
-        let atomic = AtomicModel(self.text)
-        atomic.setSelectionIndex(self.getSelectionIndex())
-        return atomic
     }
     
     required init?(coder decoder: NSCoder) {

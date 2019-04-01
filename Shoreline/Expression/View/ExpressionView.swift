@@ -10,37 +10,20 @@ import Cocoa
 
 class ExpressionView: NSView {
     var fontSize: CGFloat = 12
-    var box = NSBox(frame: NSRect.zero)
     private var expressionParent: ExpressionView?
-    private var selected = false
-    private var selectionIndex = -1
     private var childIndex = -1
-    private var rangeSelected = (0, 0)
-    
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-        //self.wantsLayer = true
-        //self.layer?.borderWidth = 2.0
-        //self.layer?.cornerRadius = 10.0
-        
-        self.box = ExpressionView.createBorderBox(color: NSColor.black, frame: frame)
-    }
     
     static func createBorderBox(color: NSColor, frame: NSRect) -> NSBox {
         let box = NSBox(frame: frame)
         box.borderColor = NSColor.black
         box.fillColor = NSColor.clear
-        box.borderWidth = 1.0
+        box.borderWidth = 3.0
         box.borderType = NSBorderType.lineBorder
-        box.borderColor = NSColor.black
+        box.borderColor = color
         box.titlePosition = NSBox.TitlePosition.noTitle
         box.boxType = NSBox.BoxType.custom
         box.isHidden = true
         return box
-    }
-    
-    required init?(coder decoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     func getExpressionSubviews() -> [ExpressionView]? {
@@ -64,32 +47,27 @@ class ExpressionView: NSView {
         self.childIndex = childIndex
     }
     
-    func setSelectionIndex(_ selectionIndex: Int) {
-        self.selectionIndex = selectionIndex
-        self.box.isHidden = selectionIndex == -1
-        self.box.borderColor = ExpressionView.getColorForSelectionIndex(selectionIndex)
-    }
+    static let COLORMAP: [NSColor] = [
+        NSColor(red: 207/255.0, green: 114/255.0, blue: 58/255.0, alpha: 1.0),
+        NSColor(red: 163/255.0, green: 97/255.0, blue: 199/255.0, alpha: 1.0),
+        NSColor(red: 113/255.0, green: 178/255.0, blue: 66/255.0, alpha: 1.0),
+        NSColor(red: 197/255.0, green: 93/255.0, blue: 147/255.0, alpha: 1.0),
+        NSColor(red: 82/255.0, green: 169/255.0, blue: 126/255.0, alpha: 1.0),
+        NSColor(red: 203/255.0, green: 83/255.0, blue: 88/255.0, alpha: 1.0),
+        NSColor(red: 101/255.0, green: 136/255.0, blue: 205/255.0, alpha: 1.0),
+        NSColor(red: 161/255.0, green: 144/255.0, blue: 63/255.0, alpha: 1.0)
+    ]
     
     static func getColorForSelectionIndex(_ selectionIndex: Int) -> NSColor {
-        switch (selectionIndex) {
-        case 0:
-            return NSColor.red
-        case 1:
-            return NSColor.blue
-        case 2:
-            return NSColor.green
-        default:
+        if selectionIndex < 0 || selectionIndex >= ExpressionView.COLORMAP.count {
             return NSColor.black
+        } else {
+            return ExpressionView.COLORMAP[selectionIndex]
         }
     }
     
-    func setSelectionIndex(_ selectionIndex: Int, rangeSelected: (Int, Int)) {
-        self.setSelectionIndex(selectionIndex)
-        self.rangeSelected = rangeSelected
-    }
-    
-    func getSelectionIndex() -> Int {
-        return self.selectionIndex
+    func selectRange(_ selectionIndex: Int, range: (Int, Int)) {
+        // to be overidden
     }
     
     func setFontSize(size: CGFloat) {
@@ -102,8 +80,8 @@ class ExpressionView: NSView {
     }
     
     func layoutCustom() {
+        // This caused a bug where multiple element selection didn't work
         self.subviews.forEach({ $0.removeFromSuperview() })
-        self.addSubview(self.box)
         // No ewwww!!!!
     }
 

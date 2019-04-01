@@ -17,16 +17,7 @@ class PatternView: ExpressionView {
         self.backgroundBox.boxType = NSBox.BoxType.custom
         self.backgroundBox.fillColor = NSColor.clear
         self.backgroundBox.borderWidth = 4.0
-        switch (patternId) {
-        case 0:
-            self.backgroundBox.borderColor = NSColor.red
-        case 1:
-            self.backgroundBox.borderColor = NSColor.blue
-        case 2:
-            self.backgroundBox.borderColor = NSColor.green
-        default:
-            self.backgroundBox.borderColor = NSColor.black
-        }
+        self.backgroundBox.borderColor = ExpressionView.getColorForSelectionIndex(patternId)
         self.backgroundBox.isHidden = false
     }
     
@@ -39,7 +30,6 @@ class PatternView: ExpressionView {
         field.font = NSFont.systemFont(ofSize: self.fontSize)
         field.sizeToFit()
         self.frame.size = NSSize(width: field.frame.width, height: field.frame.height)
-        self.box.frame.size = self.frame.size
         self.backgroundBox.frame.size = self.frame.size
         // totes arb
         self.backgroundBox.borderWidth = self.fontSize / 10.0

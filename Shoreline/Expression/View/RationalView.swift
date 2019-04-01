@@ -38,12 +38,6 @@ class RationalView: ExpressionView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func asModel() -> ExpressionModel {
-        let rational = RationalModel(self.numerator.asModel(), self.denominator.asModel())
-        rational.setSelectionIndex(self.getSelectionIndex())
-        return rational
-    }
-    
     override func getExpressionSubviews() -> [ExpressionView]? {
         return [self.numerator, self.denominator]
     }
@@ -77,7 +71,6 @@ class RationalView: ExpressionView {
         self.frame.size = NSSize(
             width: line.frame.width,
             height: self.numerator.frame.height + self.denominator.frame.height + RationalView.ARBITRARY_NUMERATOR_SEPARATION)
-        self.box.frame.size = self.frame.size
         
         // Don't worry bout it performance doesn't matter
         self.setNeedsDisplay(self.frame)

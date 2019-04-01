@@ -11,7 +11,9 @@ import Cocoa
 class PlusView: ExpressionView {
     var expressions = [ExpressionView]()
     var plusWidth: CGFloat = 0
-    var selectionBoxes = [NSBox]()
+    // This sort of looks like a model.  That's not good.  Fix later.
+    var selectionBoxes = [Int: NSBox]()
+    var selectionRanges = [Int: (Int, Int)]()
     
     init(origin: NSPoint, list: [ExpressionView]) {
         let frame = NSRect(origin: origin, size: NSSize.zero)
@@ -36,30 +38,37 @@ class PlusView: ExpressionView {
         }
     }
     
-    override func setSelectionIndex(_ selectionIndex: Int, rangeSelected: (Int, Int)) {
-        super.setSelectionIndex(selectionIndex, rangeSelected: rangeSelected)
-        if rangeSelected.0 < 0 || rangeSelected.0 >= self.expressions.count
-            || rangeSelected.1 < rangeSelected.0 || rangeSelected.1 >= self.expressions.count {
+    override func selectRange(_ selectionIndex: Int, range: (Int, Int)) {
+        super.selectRange(selectionIndex, range: range)
+        if range.0 < 0 || range.0 >= self.expressions.count
+            || range.1 < range.0 || range.1 >= self.expressions.count {
             print("We're all going to die thanks to you. Great")
             exit(-1) // For now
         }
         
-        var selectionFrame = NSRect(origin: self.expressions[rangeSelected.0].frame.origin, size: NSSize.zero)
-        
-        for index in rangeSelected.0...rangeSelected.1 {
+        let frame = self.createRangedSelectionFrame(range: range)
+        let color = ExpressionView.getColorForSelectionIndex(selectionIndex)
+        let newBox = ExpressionView.createBorderBox(color: color, frame: frame)
+        newBox.isHidden = false
+        self.selectionBoxes[selectionIndex] = newBox
+        self.selectionRanges[selectionIndex] = range
+        self.addSubview(newBox)
+    }
+    
+    func createRangedSelectionFrame(range: (Int, Int)) -> NSRect {
+        // If the range is wrong I'm going to break things because time is not a thing
+        var frame = NSRect(origin: self.expressions[range.0].frame.origin, size: NSSize.zero)
+        for index in range.0...range.1 {
             let view = self.expressions[index]
-            if selectionFrame.height < view.frame.height {
-                selectionFrame.size.height = view.frame.height
+            if frame.height < view.frame.height {
+                frame.size.height = view.frame.height
             }
-            selectionFrame.size.width += view.frame.width
-            if index != rangeSelected.1 - 1 {
-                selectionFrame.size.width += self.plusWidth
+            frame.size.width += view.frame.width
+            if index != range.1 - 1 && range.0 != range.1 {
+                frame.size.width += self.plusWidth
             }
         }
-        self.box.frame = selectionFrame
-        
-        let color = ExpressionView.getColorForSelectionIndex(selectionIndex)
-        let newBox = ExpressionView.createBorderBox(color: color, frame: selectionFrame)
+        return frame
     }
     
     // I should override layout, but I don't want to break auto-layout just yet
@@ -89,29 +98,16 @@ class PlusView: ExpressionView {
             maxHeight = max(maxHeight, view.frame.height)
         }
         
+        self.frame.size = NSSize(width: currentX, height: maxHeight)
+        
         for view in self.subviews {
             view.frame.origin.y = maxHeight / 2 - view.frame.height / 2
         }
         
-        let size = NSSize(width: currentX, height: maxHeight)
-        self.frame = NSRect(origin: self.frame.origin, size: size)
-        self.box.frame.size = self.frame.size
-        self.box.frame.origin = NSPoint.zero
-        
-        // Don't worry bout it performance doesn't matter
-        self.setNeedsDisplay(self.frame)
-    }
-    
-    override func asModel() -> ExpressionModel {
-        var list = [ExpressionModel]()
-        if let subs = self.getExpressionSubviews() {
-            for sub in subs {
-                list.append(sub.asModel())
-            }
+        for (index, box) in self.selectionBoxes {
+            box.frame = self.createRangedSelectionFrame(range: self.selectionRanges[index]!)
+            self.addSubview(box)
         }
-        let plus = PlusModel(list)
-        plus.setSelectionIndex(self.getSelectionIndex())
-        return plus
     }
     
     required init?(coder decoder: NSCoder) {

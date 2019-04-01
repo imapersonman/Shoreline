@@ -15,13 +15,27 @@ class RationalModel: ExpressionModel {
     init(_ numerator: ExpressionModel, _ denominator: ExpressionModel) {
         self.numerator = numerator
         self.denominator = denominator
+        super.init()
+        
+        self.numerator.setParent(self)
+        self.denominator.setParent(self)
         
         self.numerator.setChildIndex(0)
         self.denominator.setChildIndex(1)
     }
     
     override func asView() -> ExpressionView {
-        return RationalView(numerator: self.numerator.asView(), denominator: self.denominator.asView())
+        let view = RationalView(numerator: self.numerator.asView(), denominator: self.denominator.asView())
+        for (index, range) in self.getSelectedRanges() {
+            view.selectRange(index, range: range)
+        }
+        return view
+    }
+    
+    override func clearSelectedRanges() {
+        super.clearSelectedRanges()
+        self.numerator.clearSelectedRanges()
+        self.denominator.clearSelectedRanges()
     }
     
     override func getSubExpressions() -> [ExpressionModel]? {

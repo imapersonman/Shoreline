@@ -17,8 +17,9 @@ class MainViewController: NSViewController {
     var selectionEnd: NSPoint = NSPoint.zero
     
     var currentExpressionView = ExpressionView()
-    var currentExpression = ExpressionModel()
+    var currentExpression = SourceModel(ExpressionModel())
     var viewToModel = [ExpressionView: ExpressionModel]()
+    var modelToView = [ExpressionModel: ExpressionView]()
     var nextSelectionIndex = -1
     
     override func viewDidLoad() {
@@ -27,9 +28,10 @@ class MainViewController: NSViewController {
         self.addNotificationObserver(selector: #selector(expressionSelected(_:)), name: "expressionSelected")
         self.addNotificationObserver(selector: #selector(transformationPressed(_:)), name: "transformationPressed")
         
-        self.currentExpression = RationalModel(
+        self.currentExpression = SourceModel(RationalModel(
             PlusModel([AtomicModel("a"), AtomicModel("b"), AtomicModel("c"), AtomicModel("d"), AtomicModel("e")]),
-            PlusModel([AtomicModel("g"), AtomicModel("h"), AtomicModel("i"), AtomicModel("j"), AtomicModel("k")]))
+            PlusModel([AtomicModel("g"), AtomicModel("h"), AtomicModel("i"), AtomicModel("j"), AtomicModel("k")])))
+        //self.currentExpression = PlusModel([AtomicModel("Hi"), AtomicModel("There")])
         self.updateCurrentExpressionView()
     }
     
@@ -44,10 +46,11 @@ class MainViewController: NSViewController {
         // building view-model map
         self.viewToModel = [ExpressionView: ExpressionModel]()
         var queue = [(ExpressionView, ExpressionModel)]()
-        queue.append((self.currentExpressionView, self.currentExpression))
+        queue.append((self.currentExpressionView, self.currentExpression.child))
         while !queue.isEmpty {
             let current = queue.remove(at: 0)
             self.viewToModel[current.0] = current.1
+            self.modelToView[current.1] = current.0
             if let viewSubs = current.0.getExpressionSubviews() {
                 // trees should be the same, so this should be okay to do
                 let modelSubs = current.1.getSubExpressions()!
@@ -56,11 +59,6 @@ class MainViewController: NSViewController {
                 }
             }
         }
-    }
-    
-    func updateCurrentExpressionModel() {
-        self.currentExpression = self.currentExpressionView.asModel()
-        self.sendCurrentExpressionModelToBottomBar()
     }
     
     func addNotificationObserver(selector: Selector, name: String) {
@@ -102,7 +100,8 @@ class MainViewController: NSViewController {
         self.nextSelectionIndex += 1
         
         if !event.modifierFlags.contains(NSEvent.ModifierFlags.command) {
-            self.clearExpressionIntersection(expression: self.currentExpressionView)
+            self.clearExpressionIntersection(expression: self.currentExpression)
+            self.updateCurrentExpressionView()
             self.nextSelectionIndex = 0
         }
     }
@@ -134,10 +133,10 @@ class MainViewController: NSViewController {
         self.endSelectionBox()
     }
     
-    func clearExpressionIntersection(expression: ExpressionView) {
+    func clearExpressionIntersection(expression: ExpressionModel) {
         // Uhhhggg I need to do this better
-        expression.setSelectionIndex(-1)
-        if let subs = expression.getExpressionSubviews() {
+        expression.clearSelectedRanges()
+        if let subs = expression.getSubExpressions() {
             for sub in subs {
                 self.clearExpressionIntersection(expression: sub)
             }
@@ -150,18 +149,18 @@ class MainViewController: NSViewController {
      * Returns a list of the expressions that are being intersected by the given rect.  Lowest level
      * of selection process.
      */
-    func getIntersectedViews(_ expression: ExpressionView, _ rect: NSRect) -> [ExpressionView] {
-        var intersectedViews = [ExpressionView]()
+    func getIntersectedViews(_ expression: ExpressionView, _ rect: NSRect) -> Set<ExpressionView> {
+        var intersectedViews = Set<ExpressionView>()
         let transformedRect = expression.superview!.convert(rect, to: expression)
         
         if transformedRect.intersects(NSRect(origin: NSPoint.zero, size: expression.frame.size)) {
             if let subs = expression.getExpressionSubviews() {
                 for sub in subs {
                     let intersectedSubSubs = self.getIntersectedViews(sub, transformedRect)
-                    intersectedViews.append(contentsOf: intersectedSubSubs)
+                    intersectedViews.formUnion(intersectedSubSubs)
                 }
             } else {
-                intersectedViews.append(expression)
+                intersectedViews.insert(expression)
             }
         }
         
@@ -173,8 +172,8 @@ class MainViewController: NSViewController {
      *
      * Returns the lowest common ancestor of all the ExpressionView's in the given list.
      */
-    func lowestCommonAncestor(_ expressions: [ExpressionView]) -> ExpressionView? {
-        var visitedNodeCount = [ExpressionView : Int]()
+    func lowestCommonAncestor(_ expressions: Set<ExpressionModel>) -> ExpressionModel? {
+        var visitedNodeCount = [ExpressionModel : Int]()
         
         for expression in expressions {
             var current = Optional(expression)
@@ -194,13 +193,13 @@ class MainViewController: NSViewController {
         return nil
     }
     
-    var lastIntersectedViews = [ExpressionView]()
+    var lastIntersectedModels = Set<ExpressionModel>()
     
-    func intersectedViewListDidChange(_ newIntersectedViews: [ExpressionView]) -> Bool {
-        if self.lastIntersectedViews.count != newIntersectedViews.count {
+    func intersectedModelsDidChange(_ newIntersectedModels: [ExpressionModel]) -> Bool {
+        if self.lastIntersectedModels.count != newIntersectedModels.count {
             return true
         } else {
-            for (last, new) in zip(self.lastIntersectedViews, newIntersectedViews) {
+            for (last, new) in zip(self.lastIntersectedModels, newIntersectedModels) {
                 if last != new {
                     return true
                 }
@@ -209,41 +208,49 @@ class MainViewController: NSViewController {
         return false
     }
     
+    func getSelectionRange(_ parent: ExpressionModel, _ subModels: Set<ExpressionModel>) -> (Int, Int) {
+        var lowest = Int.max
+        var highest = Int.min
+        for model in subModels {
+            var current = Optional(model)
+            while current?.getParent() != parent && current?.getParent() != nil {
+                current = current!.getParent()
+            }
+            if current?.getParent() == parent {
+                if current!.getChildIndex() < lowest {
+                    lowest = current!.getChildIndex()
+                }
+                if current!.getChildIndex() > highest {
+                    highest = current!.getChildIndex()
+                }
+            }
+        }
+        return (lowest, highest)
+    }
+    
     func checkAndMakeExpressionSelection(_ expression: ExpressionView, _ rect: NSRect) {
         let intersectedViews = self.getIntersectedViews(expression, rect)
-        // Another early out is required since the same selection might have this called more than once
-        if !self.intersectedViewListDidChange(intersectedViews) {
+        let intersectedModels = Set<ExpressionModel>(intersectedViews.map({ (view) -> ExpressionModel in self.viewToModel[view]! }))
+        let difference = self.lastIntersectedModels.symmetricDifference(intersectedModels)
+        if difference.isEmpty {
             return
         }
         
-        self.lastIntersectedViews = intersectedViews
-        if let toSelect = self.lowestCommonAncestor(intersectedViews) {
-            // Clear children, then select toSelect
-            self.clearExpressionIntersection(expression: expression)
-            
-            var intersectedAsChildren = Set<ExpressionView>()
-            var lowest = Int.max
-            var highest = Int.min
-            for view in intersectedViews {
-                var current = Optional(view)
-                while current?.getParent() != toSelect && current?.getParent() != nil {
-                    current = current!.getParent()
-                }
-                if current?.getParent() == toSelect {
-                    intersectedAsChildren.insert(current!)
-                    if current!.getChildIndex() < lowest {
-                        lowest = current!.getChildIndex()
-                    }
-                    if current!.getChildIndex() > highest {
-                        highest = current!.getChildIndex()
-                    }
-                }
+        // Believe it or not, this is a copy
+        self.lastIntersectedModels = intersectedModels
+        
+        if let lca = self.lowestCommonAncestor(intersectedModels) {
+            var toSelect = lca
+            // messy, but for a cleaner cause
+            if intersectedModels.count == 1 {
+                // i know it exists cause a SourceModel can't be selected
+                toSelect = toSelect.getParent()!
             }
-            
-            toSelect.setSelectionIndex(self.nextSelectionIndex, rangeSelected: (lowest, highest))
-            self.viewToModel[toSelect]?.setSelectionIndex(self.nextSelectionIndex, rangeSelected: (lowest, highest))
-            
-            self.updateCurrentExpressionModel()
+            // update the model
+            let range = self.getSelectionRange(toSelect, intersectedModels)
+            toSelect.selectRange(self.nextSelectionIndex, range)
+            // update the view based on the model
+            self.updateCurrentExpressionView()
         }
     }
     
