@@ -15,6 +15,10 @@ class RationalView: ExpressionView {
     let denominator: ExpressionView
     var line = NSBox()
     
+    // This sort of looks like a model.  That's not good.  Fix later.
+    var selectionBoxes = [Int: NSBox]()
+    var selectionRanges = [Int: (Int, Int)]()
+    
     init(origin: NSPoint, numerator: ExpressionView, denominator: ExpressionView) {
         self.numerator = numerator
         self.denominator = denominator
@@ -40,6 +44,39 @@ class RationalView: ExpressionView {
     
     override func getExpressionSubviews() -> [ExpressionView]? {
         return [self.numerator, self.denominator]
+    }
+    
+    func createRangedSelectionFrame(range: (Int, Int)) -> NSRect {
+        switch range {
+        case (0, 0):
+            // numerator view
+            return self.numerator.frame
+        case (1, 1):
+            // denominator view
+            return self.denominator.frame
+        case (0, 1):
+            // numerator and denominator view
+            return self.frame
+        default:
+            print("this selection doesn't make any sense for a RationalView")
+            return NSRect.zero
+        }
+    }
+    
+    override func selectRange(_ selectionIndex: Int, range: (Int, Int)) {
+        super.selectRange(selectionIndex, range: range)
+        if range.0 < 0 || range.0 > 1 || range.1 < 0 || range.1 > 1 {
+            print("We're all going to die thanks to you. Great")
+            exit(-1) // For now
+        }
+        
+        let frame = self.createRangedSelectionFrame(range: range)
+        let color = ExpressionView.getColorForSelectionIndex(selectionIndex)
+        let newBox = ExpressionView.createBorderBox(color: color, frame: frame)
+        newBox.isHidden = false
+        self.selectionBoxes[selectionIndex] = newBox
+        self.selectionRanges[selectionIndex] = range
+        self.addSubview(newBox)
     }
     
     override func layoutCustom() {
@@ -72,8 +109,10 @@ class RationalView: ExpressionView {
             width: line.frame.width,
             height: self.numerator.frame.height + self.denominator.frame.height + RationalView.ARBITRARY_NUMERATOR_SEPARATION)
         
-        // Don't worry bout it performance doesn't matter
-        self.setNeedsDisplay(self.frame)
+        for (index, box) in self.selectionBoxes {
+            box.frame = self.createRangedSelectionFrame(range: self.selectionRanges[index]!)
+            self.addSubview(box)
+        }
     }
     
     override func draw(_ dirtyRect: NSRect) {

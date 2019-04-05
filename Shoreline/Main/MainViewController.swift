@@ -27,11 +27,11 @@ class MainViewController: NSViewController {
         // Do view setup here.
         self.addNotificationObserver(selector: #selector(expressionSelected(_:)), name: "expressionSelected")
         self.addNotificationObserver(selector: #selector(transformationPressed(_:)), name: "transformationPressed")
-        
+        //self.currentExpression = SourceModel(PlusModel([AtomicModel("a"), AtomicModel("b"), AtomicModel("c")]))
         self.currentExpression = SourceModel(RationalModel(
-            PlusModel([AtomicModel("a"), AtomicModel("b"), AtomicModel("c"), AtomicModel("d"), AtomicModel("e")]),
-            PlusModel([AtomicModel("g"), AtomicModel("h"), AtomicModel("i"), AtomicModel("j"), AtomicModel("k")])))
-        //self.currentExpression = PlusModel([AtomicModel("Hi"), AtomicModel("There")])
+            PlusModel([AtomicModel("5"), AtomicModel("4"), AtomicModel("3"), AtomicModel("2"), AtomicModel("1")]),
+            PlusModel([AtomicModel("6"), AtomicModel("7"), AtomicModel("8"), AtomicModel("9"), AtomicModel("10")])
+        ))
         self.updateCurrentExpressionView()
     }
     
@@ -46,7 +46,7 @@ class MainViewController: NSViewController {
         // building view-model map
         self.viewToModel = [ExpressionView: ExpressionModel]()
         var queue = [(ExpressionView, ExpressionModel)]()
-        queue.append((self.currentExpressionView, self.currentExpression.child))
+        queue.append((self.currentExpressionView, self.currentExpression))
         while !queue.isEmpty {
             let current = queue.remove(at: 0)
             self.viewToModel[current.0] = current.1
@@ -74,10 +74,12 @@ class MainViewController: NSViewController {
     }
     
     @objc func transformationPressed(_ notification: NSNotification) {
-        if let text = notification.userInfo?["text"] as? String {
-            self.bottomLabel.stringValue = text
+        if let expression = notification.userInfo?["transformedModel"] as? SourceModel {
+            self.currentExpression = expression
+            self.updateCurrentExpressionView()
         } else {
-            print("MainViewController wanted text, got burned")
+            print("MainViewController wanted transformedModel, got burned")
+            exit(-1)
         }
     }
     
@@ -167,32 +169,6 @@ class MainViewController: NSViewController {
         return intersectedViews
     }
     
-    /**
-     * lowestCommonAncestor: [ExpressionView] -> ExpressionView?
-     *
-     * Returns the lowest common ancestor of all the ExpressionView's in the given list.
-     */
-    func lowestCommonAncestor(_ expressions: Set<ExpressionModel>) -> ExpressionModel? {
-        var visitedNodeCount = [ExpressionModel : Int]()
-        
-        for expression in expressions {
-            var current = Optional(expression)
-            while current != nil {
-                if visitedNodeCount[current!] == nil {
-                    visitedNodeCount[current!] = 1
-                } else {
-                    visitedNodeCount.updateValue(visitedNodeCount[current!]! + 1, forKey: current!)
-                }
-                if visitedNodeCount[current!] == expressions.count {
-                    return current!
-                }
-                current = current?.getParent()
-            }
-        }
-        
-        return nil
-    }
-    
     var lastIntersectedModels = Set<ExpressionModel>()
     
     func intersectedModelsDidChange(_ newIntersectedModels: [ExpressionModel]) -> Bool {
@@ -239,23 +215,28 @@ class MainViewController: NSViewController {
         // Believe it or not, this is a copy
         self.lastIntersectedModels = intersectedModels
         
-        if let lca = self.lowestCommonAncestor(intersectedModels) {
+        if let lca = ExpressionModel.lowestCommonAncestor(intersectedModels) {
             var toSelect = lca
             // messy, but for a cleaner cause
             if intersectedModels.count == 1 {
-                // i know it exists cause a SourceModel can't be selected
+                // i know it exists because a SourceModel can't be selected
                 toSelect = toSelect.getParent()!
             }
             // update the model
             let range = self.getSelectionRange(toSelect, intersectedModels)
             toSelect.selectRange(self.nextSelectionIndex, range)
+            self.sendExpressionModelToBottomBar(self.currentExpression)  // for now but ahhh no
             // update the view based on the model
             self.updateCurrentExpressionView()
         }
     }
     
     func sendCurrentExpressionModelToBottomBar() {
-        let dictionary = ["selection": self.currentExpression]
+        self.sendExpressionModelToBottomBar(self.currentExpression)
+    }
+    
+    func sendExpressionModelToBottomBar(_ expression: ExpressionModel) {
+        let dictionary = ["selection": expression]
         NotificationCenter.default.post(name: NSNotification.Name("filterTransformations"), object: self, userInfo: dictionary)
     }
 }

@@ -35,6 +35,7 @@
 		92F9744C22345BE600C3AD04 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92F9744A22345BE600C3AD04 /* Main.storyboard */; };
 		92F9745822345BE600C3AD04 /* ShorelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F9745722345BE600C3AD04 /* ShorelineTests.swift */; };
 		92F9746322345BE600C3AD04 /* ShorelineUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F9746222345BE600C3AD04 /* ShorelineUITests.swift */; };
+		92FA8B432253E886003FD276 /* SourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92FA8B422253E886003FD276 /* SourceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		92F9745E22345BE600C3AD04 /* ShorelineUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShorelineUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92F9746222345BE600C3AD04 /* ShorelineUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShorelineUITests.swift; sourceTree = "<group>"; };
 		92F9746422345BE600C3AD04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92FA8B422253E886003FD276 /* SourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				92A52CFB223DB0A4006473E5 /* ExpressionView.swift */,
+				92FA8B422253E886003FD276 /* SourceView.swift */,
 				92428B6F223DA6BB000E26CA /* AtomicView.swift */,
 				92428B6D223D879B000E26CA /* RationalView.swift */,
 				920443F1223D62B600F188D5 /* PlusView.swift */,
@@ -395,6 +398,7 @@
 				920443D322371CFF00F188D5 /* BottombarViewController.swift in Sources */,
 				92428B6E223D879B000E26CA /* RationalView.swift in Sources */,
 				92EFED0C2252BDE9005E7909 /* SourceModel.swift in Sources */,
+				92FA8B432253E886003FD276 /* SourceView.swift in Sources */,
 				92F9744722345BE100C3AD04 /* ViewController.swift in Sources */,
 				92F9744522345BE100C3AD04 /* AppDelegate.swift in Sources */,
 				920443DB2239510400F188D5 /* MainViewController.swift in Sources */,
