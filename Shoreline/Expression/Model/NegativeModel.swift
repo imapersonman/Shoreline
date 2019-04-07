@@ -1,14 +1,14 @@
 //
-//  SourceModel.swift
+//  NegativeModel.swift
 //  Shoreline
 //
-//  Created by Koissi Adjorlolo on 4/1/19.
+//  Created by Koissi Adjorlolo on 4/6/19.
 //  Copyright © 2019 Koissi Adjorlolo. All rights reserved.
 //
 
 import Cocoa
 
-class SourceModel: ExpressionModel {
+class NegativeModel: ExpressionModel {
     var child: ExpressionModel
     
     init(_ child: ExpressionModel) {
@@ -19,13 +19,13 @@ class SourceModel: ExpressionModel {
     }
     
     override func orphanCopy() -> ExpressionModel {
-        let model = SourceModel(self.child.orphanCopy())
+        let model = NegativeModel(self.child.orphanCopy())
         model.selectedRanges = self.selectedRanges
         return model
     }
     
     override func matchesExpression(_ expression: ExpressionModel) -> Bool {
-        if let castExpression = expression as? SourceModel {
+        if let castExpression = expression as? NegativeModel {
             return self.child.matchesExpression(castExpression.child)
         } else {
             return false
@@ -39,7 +39,7 @@ class SourceModel: ExpressionModel {
             self.child.setParent(self)
         } else {
             // panic
-            print("replaceChildAt for SourceModel's specified index is not 0")
+            print("replaceChildAt for NegativeModel's specified index is not 0")
         }
     }
     
@@ -50,12 +50,12 @@ class SourceModel: ExpressionModel {
             self.child.setParent(self)
         } else {
             // panic
-            print("replaceChildAt for SourceModel's specified index is not 0")
+            print("replaceChildAt for NegativeModel's specified index is not 0")
         }
     }
     
     override func toSelectionTree() -> ExpressionModel {
-        let model = SourceModel(self.child.toSelectionTree())
+        let model = NegativeModel(self.child.toSelectionTree())
         model.selectedRanges = self.selectedRanges
         return model
     }
@@ -70,12 +70,11 @@ class SourceModel: ExpressionModel {
     }
     
     override func selectRange(_ index: Int, _ range: (Int, Int)) {
-        // a lot of this needs to change I'm ever so slightly scared
         self.selectedRanges[index] = range
     }
     
     override func asView() -> ExpressionView {
-        let source = SourceView(self.child.asView())
+        let source = NegativeView(self.child.asView())
         if let rangePair = self.selectedRanges.first {
             source.selectRange(rangePair.0, range: rangePair.1)
         }

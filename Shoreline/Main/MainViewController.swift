@@ -27,11 +27,23 @@ class MainViewController: NSViewController {
         // Do view setup here.
         self.addNotificationObserver(selector: #selector(expressionSelected(_:)), name: "expressionSelected")
         self.addNotificationObserver(selector: #selector(transformationPressed(_:)), name: "transformationPressed")
-        //self.currentExpression = SourceModel(PlusModel([AtomicModel("a"), AtomicModel("b"), AtomicModel("c")]))
-        self.currentExpression = SourceModel(RationalModel(
-            PlusModel([AtomicModel("5"), AtomicModel("4"), AtomicModel("3"), AtomicModel("2"), AtomicModel("1")]),
-            PlusModel([AtomicModel("6"), AtomicModel("7"), AtomicModel("8"), AtomicModel("9"), AtomicModel("10")])
-        ))
+        self.reset()
+    }
+    
+    func reset() {
+        self.currentExpression = SourceModel(EqualsModel(
+            AtomicModel("y"),
+            PlusModel([
+                MultiplicationModel([AtomicModel("m"), AtomicModel("x")]),
+                AtomicModel("b")])))
+        /*
+        self.currentExpression = SourceModel(EqualsModel(
+            AtomicModel("x"),
+            RationalModel(
+                PlusModel([AtomicModel("y"), NegativeModel(AtomicModel("b"))]),
+                AtomicModel("m"))))
+ */
+        //self.currentExpression = SourceModel(PlusModel([AtomicModel("a"), AtomicModel("b"), AtomicModel("c"), AtomicModel("d"), AtomicModel("e")]))
         self.updateCurrentExpressionView()
     }
     
@@ -40,7 +52,7 @@ class MainViewController: NSViewController {
         self.currentExpressionView.removeFromSuperview()
         self.currentExpressionView = self.currentExpression.asView()
         self.currentExpressionView.setFontSize(size: 72)
-        self.currentExpressionView.frame.origin = NSPoint(x: 100, y: 100)
+        self.currentExpressionView.frame.origin = NSPoint.zero
         self.view.addSubview(self.currentExpressionView)
         
         // building view-model map
@@ -59,6 +71,9 @@ class MainViewController: NSViewController {
                 }
             }
         }
+        self.currentExpressionView.frame.origin = NSPoint(
+            x: self.view.frame.size.width / 2 - self.currentExpressionView.frame.size.width / 2,
+            y: self.view.frame.size.height / 2 - self.currentExpressionView.frame.size.height / 2)
     }
     
     func addNotificationObserver(selector: Selector, name: String) {
@@ -76,6 +91,7 @@ class MainViewController: NSViewController {
     @objc func transformationPressed(_ notification: NSNotification) {
         if let expression = notification.userInfo?["transformedModel"] as? SourceModel {
             self.currentExpression = expression
+            //self.currentExpression.clearSelectedRanges()
             self.updateCurrentExpressionView()
         } else {
             print("MainViewController wanted transformedModel, got burned")
@@ -102,7 +118,7 @@ class MainViewController: NSViewController {
         self.nextSelectionIndex += 1
         
         if !event.modifierFlags.contains(NSEvent.ModifierFlags.command) {
-            self.clearExpressionIntersection(expression: self.currentExpression)
+            self.currentExpression.clearSelectedRanges()
             self.updateCurrentExpressionView()
             self.nextSelectionIndex = 0
         }
@@ -110,7 +126,7 @@ class MainViewController: NSViewController {
     
     override func mouseDragged(with event: NSEvent) {
         let pos = self.view.convert(event.locationInWindow, from: nil)
-        self.selectionEnd = pos;
+        self.selectionEnd = pos
         var frame = NSRect(x: 0.0, y: 0.0,
                            width: abs(self.selectionStart.x - self.selectionEnd.x),
                            height: abs(self.selectionStart.y - self.selectionEnd.y))
@@ -127,22 +143,12 @@ class MainViewController: NSViewController {
             frame.origin.y = self.selectionStart.y
         }
         
-        self.selectionBox.frame = frame;
-        self.checkAndMakeExpressionSelection(self.currentExpressionView, self.selectionBox.frame);
+        self.selectionBox.frame = frame
+        self.checkAndMakeExpressionSelection(self.currentExpressionView, self.selectionBox.frame)
     }
     
     override func mouseUp(with event: NSEvent) {
         self.endSelectionBox()
-    }
-    
-    func clearExpressionIntersection(expression: ExpressionModel) {
-        // Uhhhggg I need to do this better
-        expression.clearSelectedRanges()
-        if let subs = expression.getSubExpressions() {
-            for sub in subs {
-                self.clearExpressionIntersection(expression: sub)
-            }
-        }
     }
     
     /**
@@ -233,6 +239,10 @@ class MainViewController: NSViewController {
     
     func sendCurrentExpressionModelToBottomBar() {
         self.sendExpressionModelToBottomBar(self.currentExpression)
+    }
+    
+    @IBAction func resetButtonPressed(_ sender: Any) {
+        self.reset()
     }
     
     func sendExpressionModelToBottomBar(_ expression: ExpressionModel) {

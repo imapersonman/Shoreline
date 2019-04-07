@@ -119,5 +119,4 @@ class RationalView: ExpressionView {
         super.draw(dirtyRect)
         // Drawing code here.
     }
-    
 }

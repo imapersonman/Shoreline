@@ -10,6 +10,7 @@ import Cocoa
 
 class ExpressionView: NSView {
     var fontSize: CGFloat = 12
+    var hasParenthesis = false
     private var expressionParent: ExpressionView?
     private var childIndex = -1
     
@@ -59,7 +60,9 @@ class ExpressionView: NSView {
     ]
     
     static func getColorForSelectionIndex(_ selectionIndex: Int) -> NSColor {
-        if selectionIndex < 0 || selectionIndex >= ExpressionView.COLORMAP.count {
+        if selectionIndex == -2 {
+            return NSColor.gray
+        } else if selectionIndex < 0 || selectionIndex >= ExpressionView.COLORMAP.count {
             return NSColor.black
         } else {
             return ExpressionView.COLORMAP[selectionIndex]

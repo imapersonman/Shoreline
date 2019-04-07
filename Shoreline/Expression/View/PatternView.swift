@@ -32,7 +32,7 @@ class PatternView: ExpressionView {
         self.frame.size = NSSize(width: field.frame.width, height: field.frame.height)
         self.backgroundBox.frame.size = self.frame.size
         // totes arb
-        self.backgroundBox.borderWidth = self.fontSize / 10.0
+        self.backgroundBox.borderWidth = self.fontSize / 6.0
         self.addSubview(self.backgroundBox)
         
         // Don't worry bout it performance doesn't matter

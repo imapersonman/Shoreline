@@ -1,19 +1,19 @@
 //
-//  PlusModel.swift
+//  MultiplicationModel.swift
 //  Shoreline
 //
-//  Created by Koissi Adjorlolo on 3/23/19.
+//  Created by Koissi Adjorlolo on 4/5/19.
 //  Copyright © 2019 Koissi Adjorlolo. All rights reserved.
 //
 
 import Cocoa
 
-class PlusModel: NAryModel {
+class MultiplicationModel: NAryModel {
     override func asView() -> ExpressionView {
         let children = self.list.map({ (model: ExpressionModel) -> ExpressionView in
             return model.asView()
         })
-        let view = PlusView(list: children)
+        let view = MultiplicationView(list: children)
         for (index, range) in self.selectedRanges {
             view.selectRange(index, range: range)
         }
@@ -22,12 +22,11 @@ class PlusModel: NAryModel {
     }
     
     override func new(_ list: [ExpressionModel]) -> NAryModel {
-        return PlusModel(list)
+        return MultiplicationModel(list)
     }
     
     override func matchesExpression(_ expression: ExpressionModel) -> Bool {
-        // Uuuuggghhhhhh
-        if let castExpression = expression as? PlusModel {
+        if let castExpression = expression as? MultiplicationModel {
             return super.matchesExpression(castExpression)
         } else {
             return false
@@ -35,6 +34,6 @@ class PlusModel: NAryModel {
     }
     
     override func sameType(_ other: NAryModel) -> Bool {
-        return type(of: other) == PlusModel.self
+        return type(of: other) == MultiplicationModel.self
     }
 }

@@ -71,11 +71,6 @@ class ExpressionModel: NSObject {
         return ExpressionModel()
     }
     
-    func replaceWithPatternMap(_ map: [Int: ExpressionModel]) -> ExpressionModel? {
-        return nil
-    }
-    
-    
     func createPatternMap(_ map: [Int: [ExpressionModel]] = [:]) -> [Int: [ExpressionModel]] {
         var updateMap = [Int: [ExpressionModel]]()
         let children = self.getSubExpressions() ?? [ExpressionModel]()
@@ -98,9 +93,6 @@ class ExpressionModel: NSObject {
         return updateMap
     }
     
-    func applyPatternMap(_ map: [Int: [ExpressionModel]]) {
-    }
-    
     func replaceChildAt(_ index: Int, with: ExpressionModel) {
     }
     
@@ -113,10 +105,6 @@ class ExpressionModel: NSObject {
     
     func matchesExpression(_ expression: ExpressionModel) -> Bool {
         return false
-    }
-    
-    func findMatchingSubtree(_ pattern: ExpressionModel?) -> ExpressionModel? {
-        return nil
     }
     
     func getSelectedRanges() -> [Int: (Int, Int)] {

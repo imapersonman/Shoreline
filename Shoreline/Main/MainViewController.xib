@@ -52,12 +52,24 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pti-aS-6jo">
+                                <rect key="frame" x="389" y="226" width="75" height="32"/>
+                                <buttonCell key="cell" type="push" title="Reset" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="22l-z2-ceq">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="resetButtonPressed:" target="-2" id="S2X-gC-Hku"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="gw4-qY-TY4" firstAttribute="centerX" secondItem="gP2-Yn-KNu" secondAttribute="centerX" id="B9q-mm-9mD"/>
                             <constraint firstItem="eG0-Lj-MfA" firstAttribute="top" secondItem="gP2-Yn-KNu" secondAttribute="top" constant="20" id="Gg2-0d-lIa"/>
                             <constraint firstItem="gw4-qY-TY4" firstAttribute="top" secondItem="eG0-Lj-MfA" secondAttribute="bottom" constant="8" id="OFG-te-POC"/>
+                            <constraint firstItem="Pti-aS-6jo" firstAttribute="top" secondItem="gP2-Yn-KNu" secondAttribute="top" constant="16" id="j0S-Kg-UJv"/>
                             <constraint firstItem="eG0-Lj-MfA" firstAttribute="centerX" secondItem="gP2-Yn-KNu" secondAttribute="centerX" id="kV1-oN-XnC"/>
+                            <constraint firstAttribute="trailing" secondItem="Pti-aS-6jo" secondAttribute="trailing" constant="20" id="uuj-AE-Wc2"/>
                         </constraints>
                     </view>
                     <color key="borderColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>

@@ -38,18 +38,6 @@ class RationalModel: ExpressionModel {
         return model
     }
     
-    override func replaceWithPatternMap(_ map: [Int: ExpressionModel]) -> ExpressionModel? {
-        let optionalNumerator = self.numerator.replaceWithPatternMap(map)
-        let optionalDenominator = self.denominator.replaceWithPatternMap(map)
-        if optionalNumerator != nil && optionalDenominator != nil {
-            let model = RationalModel(optionalNumerator!, optionalDenominator!)
-            model.selectedRanges = self.selectedRanges
-            return model
-        } else {
-            return nil
-        }
-    }
-    
     override func replaceChildAt(_ index: Int, with: ExpressionModel) {
         switch index {
         case 0:
@@ -62,6 +50,7 @@ class RationalModel: ExpressionModel {
             self.denominator.setParent(self)
         default:
             // panic
+            print("replaceChildAt for RationalModel's specified index is not 0 or 1")
             exit(-1)
         }
     }
@@ -73,11 +62,6 @@ class RationalModel: ExpressionModel {
         } else {
             return false
         }
-    }
-    
-    override func applyPatternMap(_ map: [Int : [ExpressionModel]]) {
-        self.numerator.applyPatternMap(map)
-        self.denominator.applyPatternMap(map)
     }
     
     override func toSelectionTree() -> ExpressionModel {
@@ -97,19 +81,9 @@ class RationalModel: ExpressionModel {
                 return RationalModel(self.numerator.orphanCopy(), self.denominator.orphanCopy())
             }
         } else {
-            // this shouldn't happen. something went wrong
-            exit(-1)
-        }
-    }
-    
-    override func findMatchingSubtree(_ pattern: ExpressionModel?) -> ExpressionModel? {
-        // yeah I'll clean this up later stop yelling at me, please
-        if pattern == nil {
-            return nil
-        } else if self.matchesExpression(pattern!) {
-            return self
-        } else {
-            return self.numerator.findMatchingSubtree(pattern) ?? self.denominator.findMatchingSubtree(pattern)
+            return self.orphanCopy()
+            // print("toSelectionTree for RationalModel's ranges are not correct")
+            // exit(-1)
         }
     }
     
