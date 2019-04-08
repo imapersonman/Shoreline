@@ -9,12 +9,17 @@
 import Cocoa
 
 class BottombarItem: NSCollectionViewItem {
+    static let DEFAULT_COLOR = NSColor.windowBackgroundColor
+    static let LOCKOUT_COLOR = NSColor.disabledControlTextColor
+    
+    @IBOutlet weak var backgroundBox: NSBox!
     var topExpression: ExpressionView?
     var bottomExpression: ExpressionView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
+        self.lockTransformation(true)
     }
     
     func setExpressions(top: ExpressionModel, bottom: ExpressionModel) {
@@ -35,5 +40,13 @@ class BottombarItem: NSCollectionViewItem {
         self.bottomExpression!.frame.origin.x = self.view.frame.width / 2 - self.bottomExpression!.frame.width / 2
         self.bottomExpression?.layoutCustom()
         self.view.addSubview(self.bottomExpression!)
+    }
+    
+    func lockTransformation(_ shouldLock: Bool) {
+        if shouldLock {
+            self.backgroundBox.fillColor = BottombarItem.LOCKOUT_COLOR
+        } else {
+            self.backgroundBox.fillColor = BottombarItem.DEFAULT_COLOR
+        }
     }
 }

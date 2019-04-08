@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="BottombarItem" customModule="Shoreline" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundBox" destination="HsZ-yd-Xnh" id="pGf-kN-HBX"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>

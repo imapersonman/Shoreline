@@ -28,18 +28,26 @@
 		9283028022592A1F00091689 /* NegativeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283027F22592A1F00091689 /* NegativeModel.swift */; };
 		9283028222592ADC00091689 /* NegativeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283028122592ADC00091689 /* NegativeView.swift */; };
 		9283028422593DEB00091689 /* WildcardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283028322593DEB00091689 /* WildcardModel.swift */; };
+		92830287225AD21700091689 /* TransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92830286225AD21700091689 /* TransformationModel.swift */; };
+		92830289225AD25200091689 /* IdentityTransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92830288225AD25200091689 /* IdentityTransformationModel.swift */; };
+		9283028B225AD28300091689 /* MultiplicativeIdentityTransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283028A225AD28300091689 /* MultiplicativeIdentityTransformationModel.swift */; };
+		9283028D225AD29700091689 /* AdditiveIdentityTransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283028C225AD29700091689 /* AdditiveIdentityTransformationModel.swift */; };
+		9283028F225AD2B900091689 /* CommutativeNAryTransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283028E225AD2B900091689 /* CommutativeNAryTransformationModel.swift */; };
+		92830291225AD30E00091689 /* CommutativeAdditionTransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92830290225AD30E00091689 /* CommutativeAdditionTransformationModel.swift */; };
+		92830293225AD33B00091689 /* CommutativeMultiplicationTransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92830292225AD33B00091689 /* CommutativeMultiplicationTransformationModel.swift */; };
+		92830295225AD35800091689 /* CommutativeEqualsTransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92830294225AD35800091689 /* CommutativeEqualsTransformationModel.swift */; };
+		92830297225AD38300091689 /* DoubleNegativeTransformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92830296225AD38300091689 /* DoubleNegativeTransformationModel.swift */; };
+		92830299225AD39800091689 /* MoveAdditionAcrossEquals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92830298225AD39800091689 /* MoveAdditionAcrossEquals.swift */; };
+		9283029D225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283029C225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift */; };
 		92A3E5DB2246CECC00C8571B /* ExpressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3E5DA2246CECC00C8571B /* ExpressionModel.swift */; };
 		92A3E5DD2246CF3100C8571B /* qRionalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3E5DC2246CF3100C8571B /* qRionalModel.swift */; };
 		92A3E5DF2246D5D900C8571B /* PlusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3E5DE2246D5D900C8571B /* PlusModel.swift */; };
-		92A3E5E62248265400C8571B /* TransformationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3E5E42248265400C8571B /* TransformationItem.swift */; };
-		92A3E5E72248265400C8571B /* TransformationItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92A3E5E52248265400C8571B /* TransformationItem.xib */; };
 		92A52CFC223DB0A4006473E5 /* ExpressionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A52CFB223DB0A4006473E5 /* ExpressionView.swift */; };
 		92C74A882246CBD500AC360E /* AtomicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C74A872246CBD500AC360E /* AtomicModel.swift */; };
 		92EFED05224D9E32005E7909 /* PatternModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EFED03224D9E32005E7909 /* PatternModel.swift */; };
 		92EFED06224D9E32005E7909 /* PatternView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EFED04224D9E32005E7909 /* PatternView.swift */; };
 		92EFED0C2252BDE9005E7909 /* SourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EFED0B2252BDE9005E7909 /* SourceModel.swift */; };
 		92F9744522345BE100C3AD04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F9744422345BE100C3AD04 /* AppDelegate.swift */; };
-		92F9744722345BE100C3AD04 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F9744622345BE100C3AD04 /* ViewController.swift */; };
 		92F9744922345BE600C3AD04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92F9744822345BE600C3AD04 /* Assets.xcassets */; };
 		92F9744C22345BE600C3AD04 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92F9744A22345BE600C3AD04 /* Main.storyboard */; };
 		92F9745822345BE600C3AD04 /* ShorelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F9745722345BE600C3AD04 /* ShorelineTests.swift */; };
@@ -86,11 +94,20 @@
 		9283027F22592A1F00091689 /* NegativeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegativeModel.swift; sourceTree = "<group>"; };
 		9283028122592ADC00091689 /* NegativeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegativeView.swift; sourceTree = "<group>"; };
 		9283028322593DEB00091689 /* WildcardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildcardModel.swift; sourceTree = "<group>"; };
+		92830286225AD21700091689 /* TransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationModel.swift; sourceTree = "<group>"; };
+		92830288225AD25200091689 /* IdentityTransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityTransformationModel.swift; sourceTree = "<group>"; };
+		9283028A225AD28300091689 /* MultiplicativeIdentityTransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplicativeIdentityTransformationModel.swift; sourceTree = "<group>"; };
+		9283028C225AD29700091689 /* AdditiveIdentityTransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditiveIdentityTransformationModel.swift; sourceTree = "<group>"; };
+		9283028E225AD2B900091689 /* CommutativeNAryTransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommutativeNAryTransformationModel.swift; sourceTree = "<group>"; };
+		92830290225AD30E00091689 /* CommutativeAdditionTransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommutativeAdditionTransformationModel.swift; sourceTree = "<group>"; };
+		92830292225AD33B00091689 /* CommutativeMultiplicationTransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommutativeMultiplicationTransformationModel.swift; sourceTree = "<group>"; };
+		92830294225AD35800091689 /* CommutativeEqualsTransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommutativeEqualsTransformationModel.swift; sourceTree = "<group>"; };
+		92830296225AD38300091689 /* DoubleNegativeTransformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleNegativeTransformationModel.swift; sourceTree = "<group>"; };
+		92830298225AD39800091689 /* MoveAdditionAcrossEquals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAdditionAcrossEquals.swift; sourceTree = "<group>"; };
+		9283029C225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveMultiplicationAcrossEquals.swift; sourceTree = "<group>"; };
 		92A3E5DA2246CECC00C8571B /* ExpressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionModel.swift; sourceTree = "<group>"; };
 		92A3E5DC2246CF3100C8571B /* qRionalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qRionalModel.swift; sourceTree = "<group>"; };
 		92A3E5DE2246D5D900C8571B /* PlusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusModel.swift; sourceTree = "<group>"; };
-		92A3E5E42248265400C8571B /* TransformationItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformationItem.swift; sourceTree = "<group>"; };
-		92A3E5E52248265400C8571B /* TransformationItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransformationItem.xib; sourceTree = "<group>"; };
 		92A52CFB223DB0A4006473E5 /* ExpressionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionView.swift; sourceTree = "<group>"; };
 		92C74A872246CBD500AC360E /* AtomicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicModel.swift; sourceTree = "<group>"; };
 		92EFED03224D9E32005E7909 /* PatternModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatternModel.swift; sourceTree = "<group>"; };
@@ -98,7 +115,6 @@
 		92EFED0B2252BDE9005E7909 /* SourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceModel.swift; sourceTree = "<group>"; };
 		92F9744122345BE100C3AD04 /* Shoreline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shoreline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92F9744422345BE100C3AD04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		92F9744622345BE100C3AD04 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		92F9744822345BE600C3AD04 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		92F9744B22345BE600C3AD04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		92F9744D22345BE600C3AD04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -150,8 +166,6 @@
 		920443D122371CAB00F188D5 /* Bottombar */ = {
 			isa = PBXGroup;
 			children = (
-				92A3E5E42248265400C8571B /* TransformationItem.swift */,
-				92A3E5E52248265400C8571B /* TransformationItem.xib */,
 				920443D222371CFF00F188D5 /* BottombarViewController.swift */,
 				920443D422371DA400F188D5 /* BottombarItem.swift */,
 				920443D522371DA400F188D5 /* BottombarItem.xib */,
@@ -183,6 +197,24 @@
 				92EFED092252BD7F005E7909 /* Model */,
 			);
 			path = Expression;
+			sourceTree = "<group>";
+		};
+		92830285225AD1FA00091689 /* Transformation */ = {
+			isa = PBXGroup;
+			children = (
+				92830286225AD21700091689 /* TransformationModel.swift */,
+				92830288225AD25200091689 /* IdentityTransformationModel.swift */,
+				9283028A225AD28300091689 /* MultiplicativeIdentityTransformationModel.swift */,
+				9283028C225AD29700091689 /* AdditiveIdentityTransformationModel.swift */,
+				9283028E225AD2B900091689 /* CommutativeNAryTransformationModel.swift */,
+				92830290225AD30E00091689 /* CommutativeAdditionTransformationModel.swift */,
+				92830292225AD33B00091689 /* CommutativeMultiplicationTransformationModel.swift */,
+				92830294225AD35800091689 /* CommutativeEqualsTransformationModel.swift */,
+				92830296225AD38300091689 /* DoubleNegativeTransformationModel.swift */,
+				92830298225AD39800091689 /* MoveAdditionAcrossEquals.swift */,
+				9283029C225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift */,
+			);
+			path = Transformation;
 			sourceTree = "<group>";
 		};
 		92EFED092252BD7F005E7909 /* Model */ = {
@@ -243,13 +275,13 @@
 		92F9744322345BE100C3AD04 /* Shoreline */ = {
 			isa = PBXGroup;
 			children = (
+				92830285225AD1FA00091689 /* Transformation */,
 				920443E2223D523200F188D5 /* Expression */,
 				920443DD2239BB4600F188D5 /* All */,
 				920443D8223950DF00F188D5 /* Main */,
 				920443D122371CAB00F188D5 /* Bottombar */,
 				920443CD22370F4E00F188D5 /* Sidebar */,
 				92F9744422345BE100C3AD04 /* AppDelegate.swift */,
-				92F9744622345BE100C3AD04 /* ViewController.swift */,
 				92F9744822345BE600C3AD04 /* Assets.xcassets */,
 				92F9744A22345BE600C3AD04 /* Main.storyboard */,
 				92F9744D22345BE600C3AD04 /* Info.plist */,
@@ -383,7 +415,6 @@
 				920443D722371DA400F188D5 /* BottombarItem.xib in Resources */,
 				920443DC2239510400F188D5 /* MainViewController.xib in Resources */,
 				92F9744922345BE600C3AD04 /* Assets.xcassets in Resources */,
-				92A3E5E72248265400C8571B /* TransformationItem.xib in Resources */,
 				92F9744C22345BE600C3AD04 /* Main.storyboard in Resources */,
 				920443C822347E9600F188D5 /* SidebarItem.xib in Resources */,
 			);
@@ -410,12 +441,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9283028D225AD29700091689 /* AdditiveIdentityTransformationModel.swift in Sources */,
+				92830293225AD33B00091689 /* CommutativeMultiplicationTransformationModel.swift in Sources */,
+				9283029D225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift in Sources */,
+				92830295225AD35800091689 /* CommutativeEqualsTransformationModel.swift in Sources */,
+				92830291225AD30E00091689 /* CommutativeAdditionTransformationModel.swift in Sources */,
 				920443DF2239BB6500F188D5 /* AllViewController.swift in Sources */,
 				928302702258180500091689 /* MultiplicationModel.swift in Sources */,
+				92830299225AD39800091689 /* MoveAdditionAcrossEquals.swift in Sources */,
 				920443CF22370F9500F188D5 /* SidebarViewController.swift in Sources */,
 				9283028222592ADC00091689 /* NegativeView.swift in Sources */,
 				920443F2223D62B600F188D5 /* PlusView.swift in Sources */,
+				9283028F225AD2B900091689 /* CommutativeNAryTransformationModel.swift in Sources */,
 				92A3E5DB2246CECC00C8571B /* ExpressionModel.swift in Sources */,
+				92830297225AD38300091689 /* DoubleNegativeTransformationModel.swift in Sources */,
 				92A3E5DF2246D5D900C8571B /* PlusModel.swift in Sources */,
 				92428B70223DA6BB000E26CA /* AtomicView.swift in Sources */,
 				92EFED06224D9E32005E7909 /* PatternView.swift in Sources */,
@@ -423,15 +462,17 @@
 				92C74A882246CBD500AC360E /* AtomicModel.swift in Sources */,
 				920443D622371DA400F188D5 /* BottombarItem.swift in Sources */,
 				920443C722347E9600F188D5 /* SidebarItem.swift in Sources */,
+				9283028B225AD28300091689 /* MultiplicativeIdentityTransformationModel.swift in Sources */,
 				928302742258305300091689 /* MultiplicationView.swift in Sources */,
 				92A52CFC223DB0A4006473E5 /* ExpressionView.swift in Sources */,
 				92A3E5DD2246CF3100C8571B /* qRionalModel.swift in Sources */,
+				92830289225AD25200091689 /* IdentityTransformationModel.swift in Sources */,
 				920443D322371CFF00F188D5 /* BottombarViewController.swift in Sources */,
 				92428B6E223D879B000E26CA /* RationalView.swift in Sources */,
 				9283027C225859B600091689 /* EqualsModel.swift in Sources */,
 				92EFED0C2252BDE9005E7909 /* SourceModel.swift in Sources */,
+				92830287225AD21700091689 /* TransformationModel.swift in Sources */,
 				92FA8B432253E886003FD276 /* SourceView.swift in Sources */,
-				92F9744722345BE100C3AD04 /* ViewController.swift in Sources */,
 				928302762258309700091689 /* NAryView.swift in Sources */,
 				92F9744522345BE100C3AD04 /* AppDelegate.swift in Sources */,
 				9283028022592A1F00091689 /* NegativeModel.swift in Sources */,
@@ -439,7 +480,6 @@
 				920443DB2239510400F188D5 /* MainViewController.swift in Sources */,
 				9283027A22583CDB00091689 /* NAryModel.swift in Sources */,
 				92EFED05224D9E32005E7909 /* PatternModel.swift in Sources */,
-				92A3E5E62248265400C8571B /* TransformationItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

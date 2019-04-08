@@ -12,6 +12,7 @@ class MainViewController: NSViewController {
     @IBOutlet weak var sidebarLabel: NSTextField!
     @IBOutlet weak var bottomLabel: NSTextField!
     @IBOutlet weak var selectionBox: NSBox!
+    @IBOutlet weak var inputField: NSLayoutConstraint!
     
     var selectionStart: NSPoint = NSPoint.zero
     var selectionEnd: NSPoint = NSPoint.zero
@@ -42,7 +43,7 @@ class MainViewController: NSViewController {
             RationalModel(
                 PlusModel([AtomicModel("y"), NegativeModel(AtomicModel("b"))]),
                 AtomicModel("m"))))
- */
+         */
         //self.currentExpression = SourceModel(PlusModel([AtomicModel("a"), AtomicModel("b"), AtomicModel("c"), AtomicModel("d"), AtomicModel("e")]))
         self.updateCurrentExpressionView()
     }
@@ -122,6 +123,7 @@ class MainViewController: NSViewController {
             self.updateCurrentExpressionView()
             self.nextSelectionIndex = 0
         }
+        self.sendExpressionModelToBottomBar(self.currentExpression)
     }
     
     override func mouseDragged(with event: NSEvent) {
@@ -235,10 +237,6 @@ class MainViewController: NSViewController {
             // update the view based on the model
             self.updateCurrentExpressionView()
         }
-    }
-    
-    func sendCurrentExpressionModelToBottomBar() {
-        self.sendExpressionModelToBottomBar(self.currentExpression)
     }
     
     @IBAction func resetButtonPressed(_ sender: Any) {
