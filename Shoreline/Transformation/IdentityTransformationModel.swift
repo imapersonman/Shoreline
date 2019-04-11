@@ -65,6 +65,29 @@ class IdentityTransformationModel: TransformationModel {
                 // scary
                 parentAsPlus.getParent()!.replaceChildAt(parentAsPlus.getChildIndex(), with: parentAsPlus.new(newSiblings))
             }
+        } else if let lcaAsNAry = lca as? NAryModel {
+            if !lcaAsNAry.sameType(self.nAryOperator) {
+                parent.replaceChildAt(lca.getChildIndex(), with: self.nAryOperator.new([lca.orphanCopy(), self.identity.orphanCopy()]))
+                return newExpression
+            } else {
+                let lastSelectedIndex = lcaAsNAry.selectedRanges.first!.value.1
+                var newKids = [ExpressionModel]()
+                newKids.append(contentsOf: lcaAsNAry.list[0...lastSelectedIndex])
+                if lastSelectedIndex < lcaAsNAry.list.count - 1 {
+                    if let nextAsIdentity = lcaAsNAry.list[lastSelectedIndex + 1] as? AtomicModel,
+                        nextAsIdentity.text == self.identity.text {
+                        if lastSelectedIndex + 1 < lcaAsNAry.list.count - 1 {
+                            newKids.append(contentsOf: lcaAsNAry.list[lastSelectedIndex + 2...lcaAsNAry.list.count - 1])
+                        }
+                    } else {
+                        newKids.append(self.identity.orphanCopy())
+                        newKids.append(contentsOf: lcaAsNAry.list[lastSelectedIndex + 1...lcaAsNAry.list.count - 1])
+                    }
+                } else {
+                    newKids.append(self.identity.orphanCopy())
+                }
+                parent.replaceChildAt(lca.getChildIndex(), with: lcaAsNAry.new(newKids))
+            }
         } else {
             let newSelf = nAryOperator.new([lca.orphanCopy(), self.identity.orphanCopy()])
             parent.replaceChildAt(lca.getChildIndex(), with: newSelf)

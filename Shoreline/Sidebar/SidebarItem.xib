@@ -8,7 +8,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SidebarItem" customModule="Shoreline" customModuleProvider="target">
             <connections>
-                <outlet property="labelField" destination="vet-6E-XeR" id="dmb-go-dM6"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -24,25 +23,17 @@
                         <rect key="frame" x="1" y="1" width="478" height="270"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="272" id="mKF-wT-IBz"/>
+                        <constraint firstAttribute="width" constant="480" id="qd8-6d-F8T"/>
+                    </constraints>
                     <color key="borderColor" white="0.66666666666666663" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="fillColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                 </box>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vet-6E-XeR">
-                    <rect key="frame" x="222" y="127" width="37" height="17"/>
-                    <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="sCP-di-kMp">
-                        <font key="font" usesAppearanceFont="YES"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="vet-6E-XeR" firstAttribute="centerX" secondItem="lvq-Nw-hkP" secondAttribute="centerX" id="5QZ-zk-OQu"/>
-                <constraint firstAttribute="trailing" secondItem="lvq-Nw-hkP" secondAttribute="trailing" id="OUw-lo-HHS"/>
-                <constraint firstItem="lvq-Nw-hkP" firstAttribute="centerY" secondItem="vet-6E-XeR" secondAttribute="centerY" id="UCB-ya-Wlu"/>
-                <constraint firstAttribute="bottom" secondItem="lvq-Nw-hkP" secondAttribute="bottom" id="YYY-Uy-t10"/>
-                <constraint firstItem="vet-6E-XeR" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="brD-gd-ZNL"/>
-                <constraint firstItem="lvq-Nw-hkP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="iJs-om-heo"/>
+                <constraint firstItem="lvq-Nw-hkP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="bsD-s5-wTA"/>
+                <constraint firstItem="lvq-Nw-hkP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="xlD-jQ-QKe"/>
             </constraints>
         </customView>
     </objects>

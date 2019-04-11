@@ -15,11 +15,17 @@ class BottombarItem: NSCollectionViewItem {
     @IBOutlet weak var backgroundBox: NSBox!
     var topExpression: ExpressionView?
     var bottomExpression: ExpressionView?
+    var foregroundBox = NSBox()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
         self.lockTransformation(true)
+        self.foregroundBox.frame = NSRect(origin: NSPoint.zero, size: self.view.frame.size)
+        self.foregroundBox.boxType = NSBox.BoxType.custom
+        self.foregroundBox.titlePosition = NSBox.TitlePosition.noTitle
+        self.foregroundBox.fillColor = NSColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        self.foregroundBox.borderColor = NSColor.clear
     }
     
     func setExpressions(top: ExpressionModel, bottom: ExpressionModel) {
@@ -44,9 +50,13 @@ class BottombarItem: NSCollectionViewItem {
     
     func lockTransformation(_ shouldLock: Bool) {
         if shouldLock {
-            self.backgroundBox.fillColor = BottombarItem.LOCKOUT_COLOR
+            //self.backgroundBox.fillColor = BottombarItem.LOCKOUT_COLOR
+            self.view.addSubview(self.foregroundBox)
         } else {
-            self.backgroundBox.fillColor = BottombarItem.DEFAULT_COLOR
+            //self.backgroundBox.fillColor = BottombarItem.DEFAULT_COLOR
+            if self.foregroundBox.superview != nil {
+                self.foregroundBox.removeFromSuperview()
+            }
         }
     }
 }

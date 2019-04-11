@@ -19,6 +19,10 @@
 		920443F2223D62B600F188D5 /* PlusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920443F1223D62B600F188D5 /* PlusView.swift */; };
 		92428B6E223D879B000E26CA /* RationalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92428B6D223D879B000E26CA /* RationalView.swift */; };
 		92428B70223DA6BB000E26CA /* AtomicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92428B6F223DA6BB000E26CA /* AtomicView.swift */; };
+		9259E125225BE1DE00EA8A2F /* ScrollViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9259E123225BE1DE00EA8A2F /* ScrollViewTest.swift */; };
+		9259E126225BE1DE00EA8A2F /* ScrollViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9259E124225BE1DE00EA8A2F /* ScrollViewTest.xib */; };
+		9259E12A225BE89A00EA8A2F /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9259E129225BE89A00EA8A2F /* HistoryView.swift */; };
+		926AE5A7225F96FD008E5AD2 /* RemoveOneInDenominator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926AE5A6225F96FD008E5AD2 /* RemoveOneInDenominator.swift */; };
 		928302702258180500091689 /* MultiplicationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283026F2258180500091689 /* MultiplicationModel.swift */; };
 		928302742258305300091689 /* MultiplicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928302732258305300091689 /* MultiplicationView.swift */; };
 		928302762258309700091689 /* NAryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928302752258309700091689 /* NAryView.swift */; };
@@ -40,7 +44,7 @@
 		92830299225AD39800091689 /* MoveAdditionAcrossEquals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92830298225AD39800091689 /* MoveAdditionAcrossEquals.swift */; };
 		9283029D225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9283029C225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift */; };
 		92A3E5DB2246CECC00C8571B /* ExpressionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3E5DA2246CECC00C8571B /* ExpressionModel.swift */; };
-		92A3E5DD2246CF3100C8571B /* qRionalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3E5DC2246CF3100C8571B /* qRionalModel.swift */; };
+		92A3E5DD2246CF3100C8571B /* RationalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3E5DC2246CF3100C8571B /* RationalModel.swift */; };
 		92A3E5DF2246D5D900C8571B /* PlusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A3E5DE2246D5D900C8571B /* PlusModel.swift */; };
 		92A52CFC223DB0A4006473E5 /* ExpressionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A52CFB223DB0A4006473E5 /* ExpressionView.swift */; };
 		92C74A882246CBD500AC360E /* AtomicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C74A872246CBD500AC360E /* AtomicModel.swift */; };
@@ -85,6 +89,10 @@
 		920443F1223D62B600F188D5 /* PlusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusView.swift; sourceTree = "<group>"; };
 		92428B6D223D879B000E26CA /* RationalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RationalView.swift; sourceTree = "<group>"; };
 		92428B6F223DA6BB000E26CA /* AtomicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicView.swift; sourceTree = "<group>"; };
+		9259E123225BE1DE00EA8A2F /* ScrollViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewTest.swift; sourceTree = "<group>"; };
+		9259E124225BE1DE00EA8A2F /* ScrollViewTest.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScrollViewTest.xib; sourceTree = "<group>"; };
+		9259E129225BE89A00EA8A2F /* HistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		926AE5A6225F96FD008E5AD2 /* RemoveOneInDenominator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveOneInDenominator.swift; sourceTree = "<group>"; };
 		9283026F2258180500091689 /* MultiplicationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplicationModel.swift; sourceTree = "<group>"; };
 		928302732258305300091689 /* MultiplicationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplicationView.swift; sourceTree = "<group>"; };
 		928302752258309700091689 /* NAryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NAryView.swift; sourceTree = "<group>"; };
@@ -106,7 +114,7 @@
 		92830298225AD39800091689 /* MoveAdditionAcrossEquals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAdditionAcrossEquals.swift; sourceTree = "<group>"; };
 		9283029C225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveMultiplicationAcrossEquals.swift; sourceTree = "<group>"; };
 		92A3E5DA2246CECC00C8571B /* ExpressionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionModel.swift; sourceTree = "<group>"; };
-		92A3E5DC2246CF3100C8571B /* qRionalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qRionalModel.swift; sourceTree = "<group>"; };
+		92A3E5DC2246CF3100C8571B /* RationalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RationalModel.swift; sourceTree = "<group>"; };
 		92A3E5DE2246D5D900C8571B /* PlusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusModel.swift; sourceTree = "<group>"; };
 		92A52CFB223DB0A4006473E5 /* ExpressionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionView.swift; sourceTree = "<group>"; };
 		92C74A872246CBD500AC360E /* AtomicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicModel.swift; sourceTree = "<group>"; };
@@ -176,8 +184,11 @@
 		920443D8223950DF00F188D5 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				9259E129225BE89A00EA8A2F /* HistoryView.swift */,
 				920443D92239510400F188D5 /* MainViewController.swift */,
 				920443DA2239510400F188D5 /* MainViewController.xib */,
+				9259E123225BE1DE00EA8A2F /* ScrollViewTest.swift */,
+				9259E124225BE1DE00EA8A2F /* ScrollViewTest.xib */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -213,6 +224,7 @@
 				92830296225AD38300091689 /* DoubleNegativeTransformationModel.swift */,
 				92830298225AD39800091689 /* MoveAdditionAcrossEquals.swift */,
 				9283029C225AD8F100091689 /* MoveMultiplicationAcrossEquals.swift */,
+				926AE5A6225F96FD008E5AD2 /* RemoveOneInDenominator.swift */,
 			);
 			path = Transformation;
 			sourceTree = "<group>";
@@ -225,7 +237,7 @@
 				9283027F22592A1F00091689 /* NegativeModel.swift */,
 				92C74A872246CBD500AC360E /* AtomicModel.swift */,
 				9283027B225859B600091689 /* EqualsModel.swift */,
-				92A3E5DC2246CF3100C8571B /* qRionalModel.swift */,
+				92A3E5DC2246CF3100C8571B /* RationalModel.swift */,
 				9283027922583CDB00091689 /* NAryModel.swift */,
 				92A3E5DE2246D5D900C8571B /* PlusModel.swift */,
 				9283026F2258180500091689 /* MultiplicationModel.swift */,
@@ -417,6 +429,7 @@
 				92F9744922345BE600C3AD04 /* Assets.xcassets in Resources */,
 				92F9744C22345BE600C3AD04 /* Main.storyboard in Resources */,
 				920443C822347E9600F188D5 /* SidebarItem.xib in Resources */,
+				9259E126225BE1DE00EA8A2F /* ScrollViewTest.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +466,7 @@
 				9283028222592ADC00091689 /* NegativeView.swift in Sources */,
 				920443F2223D62B600F188D5 /* PlusView.swift in Sources */,
 				9283028F225AD2B900091689 /* CommutativeNAryTransformationModel.swift in Sources */,
+				926AE5A7225F96FD008E5AD2 /* RemoveOneInDenominator.swift in Sources */,
 				92A3E5DB2246CECC00C8571B /* ExpressionModel.swift in Sources */,
 				92830297225AD38300091689 /* DoubleNegativeTransformationModel.swift in Sources */,
 				92A3E5DF2246D5D900C8571B /* PlusModel.swift in Sources */,
@@ -465,15 +479,17 @@
 				9283028B225AD28300091689 /* MultiplicativeIdentityTransformationModel.swift in Sources */,
 				928302742258305300091689 /* MultiplicationView.swift in Sources */,
 				92A52CFC223DB0A4006473E5 /* ExpressionView.swift in Sources */,
-				92A3E5DD2246CF3100C8571B /* qRionalModel.swift in Sources */,
+				92A3E5DD2246CF3100C8571B /* RationalModel.swift in Sources */,
 				92830289225AD25200091689 /* IdentityTransformationModel.swift in Sources */,
 				920443D322371CFF00F188D5 /* BottombarViewController.swift in Sources */,
 				92428B6E223D879B000E26CA /* RationalView.swift in Sources */,
 				9283027C225859B600091689 /* EqualsModel.swift in Sources */,
+				9259E12A225BE89A00EA8A2F /* HistoryView.swift in Sources */,
 				92EFED0C2252BDE9005E7909 /* SourceModel.swift in Sources */,
 				92830287225AD21700091689 /* TransformationModel.swift in Sources */,
 				92FA8B432253E886003FD276 /* SourceView.swift in Sources */,
 				928302762258309700091689 /* NAryView.swift in Sources */,
+				9259E125225BE1DE00EA8A2F /* ScrollViewTest.swift in Sources */,
 				92F9744522345BE100C3AD04 /* AppDelegate.swift in Sources */,
 				9283028022592A1F00091689 /* NegativeModel.swift in Sources */,
 				9283027E22585BA000091689 /* EqualsView.swift in Sources */,

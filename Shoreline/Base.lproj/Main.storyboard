@@ -827,6 +827,40 @@
             </objects>
             <point key="canvasLocation" x="780" y="529"/>
         </scene>
+        <!--Window Controller-->
+        <scene sceneID="wKe-dW-F42">
+            <objects>
+                <windowController id="LJd-lg-1xc" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="" animationBehavior="default" id="EE4-in-QO4">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+                        <connections>
+                            <outlet property="delegate" destination="LJd-lg-1xc" id="ccX-ST-xBv"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="Doq-wH-Jgk" kind="relationship" relationship="window.shadowedContentViewController" id="bmk-J0-MKc"/>
+                    </connections>
+                </windowController>
+                <customObject id="J2a-Lt-qjq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1181" y="-436"/>
+        </scene>
+        <!--Scroll View Test-->
+        <scene sceneID="p11-AN-u1a">
+            <objects>
+                <viewController id="Doq-wH-Jgk" customClass="ScrollViewTest" customModule="Shoreline" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="LNv-Vy-Hop">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="9PR-BU-27U" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1861" y="-445"/>
+        </scene>
         <!--Main View Controller-->
         <scene sceneID="NqV-am-EXt">
             <objects>

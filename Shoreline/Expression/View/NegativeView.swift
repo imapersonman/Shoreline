@@ -10,6 +10,7 @@ import Cocoa
 
 class NegativeView: ExpressionView {
     let child: ExpressionView
+    let negative = NSTextField(labelWithAttributedString: NSAttributedString(string: "-"))
     
     // This sort of looks like a model.  That's not good.  Fix later.
     var selectionBoxes = [Int: NSBox]()
@@ -78,12 +79,11 @@ class NegativeView: ExpressionView {
             maxHeight = leftParen.frame.height
         }
         
-        let negative = NSTextField(labelWithAttributedString: NSAttributedString(string: "-"))
-        negative.font = NSFont.systemFont(ofSize: self.fontSize)
-        negative.sizeToFit()
-        negative.frame.origin = NSPoint(x: currentX, y: 0.0)
+        self.negative.font = NSFont.systemFont(ofSize: self.fontSize)
+        self.negative.sizeToFit()
+        self.negative.frame.origin = NSPoint(x: currentX, y: 0.0)
         currentX += negative.frame.width
-        self.addSubview(negative)
+        self.addSubview(self.negative)
         
         self.child.setFontSize(size: self.fontSize)
         self.child.frame.origin = NSPoint(x: currentX, y: 0.0)
@@ -106,6 +106,14 @@ class NegativeView: ExpressionView {
         for (index, box) in self.selectionBoxes {
             box.frame = self.createRangedSelectionFrame(range: self.selectionRanges[index]!)
             self.addSubview(box)
+        }
+    }
+    
+    override func getIntersectedViews(_ rect: NSRect) -> Set<ExpressionView> {
+        if rect.intersects(self.negative.frame) {
+            return [self]
+        } else {
+            return super.getIntersectedViews(rect)
         }
     }
     

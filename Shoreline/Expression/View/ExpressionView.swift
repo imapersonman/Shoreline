@@ -87,6 +87,24 @@ class ExpressionView: NSView {
         self.subviews.forEach({ $0.removeFromSuperview() })
         // No ewwww!!!!
     }
+    
+    func getIntersectedViews(_ rect: NSRect) -> Set<ExpressionView> {
+        var intersectedViews = Set<ExpressionView>()
+        
+        if rect.intersects(NSRect(origin: NSPoint.zero, size: self.frame.size)) {
+            if let subs = self.getExpressionSubviews() {
+                for sub in subs {
+                    let transformedRect = self.convert(rect, to: sub)
+                    let intersectedSubSubs = sub.getIntersectedViews(transformedRect)
+                    intersectedViews.formUnion(intersectedSubSubs)
+                }
+            } else {
+                intersectedViews.insert(self)
+            }
+        }
+        
+        return intersectedViews
+    }
 
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)

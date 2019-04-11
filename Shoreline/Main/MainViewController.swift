@@ -12,11 +12,32 @@ class MainViewController: NSViewController {
     @IBOutlet weak var sidebarLabel: NSTextField!
     @IBOutlet weak var bottomLabel: NSTextField!
     @IBOutlet weak var selectionBox: NSBox!
-    @IBOutlet weak var inputField: NSLayoutConstraint!
+    @IBOutlet weak var historyView: HistoryView!
     
     var selectionStart: NSPoint = NSPoint.zero
     var selectionEnd: NSPoint = NSPoint.zero
     
+    var lastIntersectedModels = Set<ExpressionModel>()
+    var intersectedModels = Set<ExpressionModel>()
+    
+    var currentExpressionIndex = 0  // might cause problems
+    var allExpressionHistories = [ExpressionModel]()
+    
+    var allExpressions = [
+        SourceModel(EqualsModel(
+            AtomicModel("y"),
+            PlusModel([
+                MultiplicationModel([AtomicModel("m"), AtomicModel("x")]),
+                AtomicModel("b")]))),
+        SourceModel(EqualsModel(
+            AtomicModel("x"),
+            RationalModel(
+                PlusModel([NegativeModel(AtomicModel("b")), AtomicModel("y")]),
+                AtomicModel("m")))),
+        SourceModel(PlusModel([AtomicModel("a"), AtomicModel("b"), AtomicModel("c"), AtomicModel("d"), AtomicModel("e")]))
+    ]
+    
+    var currentExpressionHistory = [ExpressionModel]()
     var currentExpressionView = ExpressionView()
     var currentExpression = SourceModel(ExpressionModel())
     var viewToModel = [ExpressionView: ExpressionModel]()
@@ -28,27 +49,11 @@ class MainViewController: NSViewController {
         // Do view setup here.
         self.addNotificationObserver(selector: #selector(expressionSelected(_:)), name: "expressionSelected")
         self.addNotificationObserver(selector: #selector(transformationPressed(_:)), name: "transformationPressed")
-        self.reset()
-    }
-    
-    func reset() {
-        self.currentExpression = SourceModel(EqualsModel(
-            AtomicModel("y"),
-            PlusModel([
-                MultiplicationModel([AtomicModel("m"), AtomicModel("x")]),
-                AtomicModel("b")])))
-        /*
-        self.currentExpression = SourceModel(EqualsModel(
-            AtomicModel("x"),
-            RationalModel(
-                PlusModel([AtomicModel("y"), NegativeModel(AtomicModel("b"))]),
-                AtomicModel("m"))))
-         */
-        //self.currentExpression = SourceModel(PlusModel([AtomicModel("a"), AtomicModel("b"), AtomicModel("c"), AtomicModel("d"), AtomicModel("e")]))
-        self.updateCurrentExpressionView()
+        self.historyView.setFontSize(20)
     }
     
     // I hate what I'm doing with the next two functions but I need to get things done quickly
+    var count = 0
     func updateCurrentExpressionView() {
         self.currentExpressionView.removeFromSuperview()
         self.currentExpressionView = self.currentExpression.asView()
@@ -82,17 +87,28 @@ class MainViewController: NSViewController {
     }
     
     @objc func expressionSelected(_ notification: NSNotification) {
-        if let text = notification.userInfo?["text"] as? String {
-            self.sidebarLabel.stringValue = text
+        if let expression = notification.userInfo?["expression"] as? SourceModel,
+            let index = notification.userInfo?["index"] as? Int,
+            let history = notification.userInfo?["history"] as? [ExpressionModel] {
+            self.currentExpression = expression
+            self.currentExpressionIndex = index
+            self.currentExpressionHistory = history
+            self.historyView.setExpressions(history.map({ expression in expression.asView() }))
+            self.sendExpressionModelToBottomBar(self.currentExpression)
+            self.updateCurrentExpressionView()
         } else {
-            print("MainViewController wanted text, got burned")
+            print("MainViewController wanted expression, got burned")
         }
     }
     
     @objc func transformationPressed(_ notification: NSNotification) {
         if let expression = notification.userInfo?["transformedModel"] as? SourceModel {
+            self.currentExpression.clearSelectedRanges()
+            self.currentExpressionHistory.append(self.currentExpression)
+            self.historyView.addExpression(self.currentExpression.asView())
             self.currentExpression = expression
             //self.currentExpression.clearSelectedRanges()
+            self.sendExpressionModelToSidebar(self.currentExpression, self.currentExpressionIndex, self.currentExpressionHistory)
             self.updateCurrentExpressionView()
         } else {
             print("MainViewController wanted transformedModel, got burned")
@@ -120,10 +136,11 @@ class MainViewController: NSViewController {
         
         if !event.modifierFlags.contains(NSEvent.ModifierFlags.command) {
             self.currentExpression.clearSelectedRanges()
+            self.lastIntersectedModels.removeAll()
             self.updateCurrentExpressionView()
             self.nextSelectionIndex = 0
         }
-        self.sendExpressionModelToBottomBar(self.currentExpression)
+        //self.sendExpressionModelToBottomBar(self.currentExpression)
     }
     
     override func mouseDragged(with event: NSEvent) {
@@ -151,6 +168,15 @@ class MainViewController: NSViewController {
     
     override func mouseUp(with event: NSEvent) {
         self.endSelectionBox()
+        self.sendExpressionModelToBottomBar(self.currentExpression)  // for now but ahhh no
+        
+        let difference = self.lastIntersectedModels.symmetricDifference(self.intersectedModels)
+        if difference.isEmpty {
+            return
+        }
+        //self.sendExpressionModelToSidebar(self.currentExpression, self.currentExpressionIndex, self.currentExpressionHistory)
+        // where should this go???
+        self.lastIntersectedModels = intersectedModels
     }
     
     /**
@@ -160,6 +186,10 @@ class MainViewController: NSViewController {
      * of selection process.
      */
     func getIntersectedViews(_ expression: ExpressionView, _ rect: NSRect) -> Set<ExpressionView> {
+        let transformedRect = expression.superview!.convert(rect, to: expression)
+        return expression.getIntersectedViews(transformedRect)
+        
+        /*
         var intersectedViews = Set<ExpressionView>()
         let transformedRect = expression.superview!.convert(rect, to: expression)
         
@@ -175,9 +205,8 @@ class MainViewController: NSViewController {
         }
         
         return intersectedViews
+ */
     }
-    
-    var lastIntersectedModels = Set<ExpressionModel>()
     
     func intersectedModelsDidChange(_ newIntersectedModels: [ExpressionModel]) -> Bool {
         if self.lastIntersectedModels.count != newIntersectedModels.count {
@@ -197,7 +226,7 @@ class MainViewController: NSViewController {
         var highest = Int.min
         for model in subModels {
             var current = Optional(model)
-            while current?.getParent() != parent && current?.getParent() != nil {
+            while (current?.getParent() != parent && current?.getParent() != nil) {
                 current = current!.getParent()
             }
             if current?.getParent() == parent {
@@ -214,37 +243,45 @@ class MainViewController: NSViewController {
     
     func checkAndMakeExpressionSelection(_ expression: ExpressionView, _ rect: NSRect) {
         let intersectedViews = self.getIntersectedViews(expression, rect)
-        let intersectedModels = Set<ExpressionModel>(intersectedViews.map({ (view) -> ExpressionModel in self.viewToModel[view]! }))
-        let difference = self.lastIntersectedModels.symmetricDifference(intersectedModels)
+        self.intersectedModels = Set<ExpressionModel>(
+            intersectedViews.map({ (view) -> ExpressionModel in self.viewToModel[view]! }))
+        let difference = self.lastIntersectedModels.symmetricDifference(self.intersectedModels)
         if difference.isEmpty {
             return
         }
         
-        // Believe it or not, this is a copy
-        self.lastIntersectedModels = intersectedModels
-        
-        if let lca = ExpressionModel.lowestCommonAncestor(intersectedModels) {
+        if let lca = ExpressionModel.lowestCommonAncestor(self.intersectedModels) {
             var toSelect = lca
             // messy, but for a cleaner cause
-            if intersectedModels.count == 1 {
+            if self.intersectedModels.count == 1 {
                 // i know it exists because a SourceModel can't be selected
                 toSelect = toSelect.getParent()!
             }
             // update the model
             let range = self.getSelectionRange(toSelect, intersectedModels)
             toSelect.selectRange(self.nextSelectionIndex, range)
-            self.sendExpressionModelToBottomBar(self.currentExpression)  // for now but ahhh no
             // update the view based on the model
+            self.lastIntersectedModels = intersectedModels
             self.updateCurrentExpressionView()
         }
     }
     
     @IBAction func resetButtonPressed(_ sender: Any) {
-        self.reset()
+        let dictionary = ["index": self.currentExpressionIndex]
+        NotificationCenter.default.post(name: NSNotification.Name("resetRequested"), object: self, userInfo: dictionary)
     }
     
     func sendExpressionModelToBottomBar(_ expression: ExpressionModel) {
         let dictionary = ["selection": expression]
         NotificationCenter.default.post(name: NSNotification.Name("filterTransformations"), object: self, userInfo: dictionary)
+    }
+    
+    func sendExpressionModelToSidebar(_ expression: ExpressionModel, _ index: Int, _ history: [ExpressionModel]) {
+        let dictionary = [
+            "expression": expression,
+            "index": index,
+            "history": history
+            ] as [String: Any]
+        NotificationCenter.default.post(name: NSNotification.Name("expressionUpdated"), object: self, userInfo: dictionary)
     }
 }

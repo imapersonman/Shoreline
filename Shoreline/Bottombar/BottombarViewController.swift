@@ -18,6 +18,7 @@ class BottombarViewController: NSViewController, NSCollectionViewDelegate, NSCol
         AdditiveIdentityTransformationModel(),
         MultiplicativeIdentityTransformationModel(),
         DoubleNegativeTransformationModel(),
+        RemoveOneInDenominator(),
         MoveAdditionAcrossEquals(),
         MoveMultiplicationAcrossEquals()
     ]
@@ -39,13 +40,11 @@ class BottombarViewController: NSViewController, NSCollectionViewDelegate, NSCol
     @objc func filterTransformations(_ notification: NSNotification) {
         if let selection = notification.userInfo?["selection"] as? ExpressionModel {
             self.selectedModel = selection
-            /*
             let map = selectedModel?.createPatternMap()
             for transformation in quoteRealList {
                 transformation.setLocked(!transformation.matchesExpressionMap(map!))
             }
-             */
-            //self.collectionView.reloadData()
+            self.collectionView.reloadData()
         } else {
             print("You LIED to me about what you gave me, I'm filter transformations")
         }
@@ -76,11 +75,9 @@ class BottombarViewController: NSViewController, NSCollectionViewDelegate, NSCol
                 return
             }
             let transformedModel = transformation.transformExpression(expression)
-            /*
             for transformation in quoteRealList {
                 transformation.setLocked(true)
             }
-             */
             self.collectionView.reloadData()
             // should this be done in MainViewController or in here?
             transformedModel.clearSelectedRanges()

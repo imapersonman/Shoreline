@@ -23,7 +23,10 @@ class MoveAdditionAcrossEquals: TransformationModel {
         var mutMap = map
         if map.count == 1 {
             let one = mutMap.popFirst()!.value[0]
-            if let _ = one.getParent() as? EqualsModel {
+            if (type(of: one.getParent()!) == EqualsModel.self
+                || (type(of: one.getParent()!) == PlusModel.self
+                    // this is scary and bad and i shouln't do it this way
+                    && type(of: one.getParent()!.getParent()!) == EqualsModel.self)) {
                 return true
             }
         }
@@ -39,48 +42,16 @@ class MoveAdditionAcrossEquals: TransformationModel {
             lca = lca.getParent()!
         }
         
-        if lca.getChildIndex() == 0 {  // if lca is on the left most side
-            if let plus = lca.getParent() as? PlusModel {  // if lca parent is a plus
-                if let equals = plus.getParent() as? EqualsModel {  // if lca parent's parent is an equals
-                    let otherSide: ExpressionModel
-                    if plus.getChildIndex() == 0 {
-                        otherSide = equals.right
-                    } else {
-                        otherSide = equals.left
-                    }
-                    
-                    let newSelf: ExpressionModel
-                    let newOther: ExpressionModel
-                    if let otherSideAsPlus = otherSide as? PlusModel {  // otherSide is a plus model
-                        var newOtherKids = [ExpressionModel]()  // ew, other kids
-                        newOtherKids.append(NegativeModel(lca.orphanCopy()))
-                        newOtherKids.append(contentsOf: otherSideAsPlus.list)
-                        newOther = PlusModel(newOtherKids)
-                    } else {  // otherSide is something else
-                        newOther = PlusModel([NegativeModel(lca.orphanCopy()), otherSide.orphanCopy()])
-                    }
-                    
-                    if plus.list.count > 2 {
-                        newSelf = PlusModel(Array(plus.list[1...plus.list.count - 1]))
-                    } else {
-                        newSelf = plus.list[1].orphanCopy()
-                    }
-                    
-                    let newEquals = EqualsModel(ExpressionModel(), ExpressionModel())
-                    newEquals.replaceChildAt(plus.getChildIndex(), with: newSelf)
-                    newEquals.replaceChildAt(otherSide.getChildIndex(), with: newOther)
-                    equals.getParent()?.replaceChildAt(equals.getChildIndex(), with: newEquals)
-                }
-            } else if let equals = lca.getParent() as? EqualsModel {  // if lca's parent is an equals
-                // i don't think this case currently ever runs thanks to this useless selection model
+        if let plus = lca.getParent() as? PlusModel {  // if lca parent is a plus
+            if let equals = plus.getParent() as? EqualsModel {  // if lca parent's parent is an equals
                 let otherSide: ExpressionModel
-                if lca.getChildIndex() == 0 {
+                if plus.getChildIndex() == 0 {
                     otherSide = equals.right
                 } else {
                     otherSide = equals.left
                 }
                 
-                // copy-paste
+                let newSelf: ExpressionModel
                 let newOther: ExpressionModel
                 if let otherSideAsPlus = otherSide as? PlusModel {  // otherSide is a plus model
                     var newOtherKids = [ExpressionModel]()  // ew, other kids
@@ -88,35 +59,49 @@ class MoveAdditionAcrossEquals: TransformationModel {
                     newOtherKids.append(contentsOf: otherSideAsPlus.list)
                     newOther = PlusModel(newOtherKids)
                 } else {  // otherSide is something else
-                    newOther = PlusModel([NegativeModel(lca.orphanCopy()), otherSide])
+                    newOther = PlusModel([NegativeModel(lca.orphanCopy()), otherSide.orphanCopy()])
                 }
                 
-                equals.replaceChildAt(lca.getChildIndex(), with: AtomicModel("0"))
-                equals.replaceChildAt(otherSide.getChildIndex(), with: newOther)
+                if plus.list.count > 2 {
+                    var newKids = [ExpressionModel]()
+                    if lca.getChildIndex() > 0 {
+                        newKids.append(contentsOf: plus.list[0...lca.getChildIndex() - 1])
+                    }
+                    if lca.getChildIndex() < plus.list.count - 1 {
+                        newKids.append(contentsOf: plus.list[lca.getChildIndex() + 1...plus.list.count - 1])
+                    }
+                    newSelf = PlusModel(newKids)
+                } else {
+                    newSelf = plus.list[(lca.getChildIndex() + 1) % 2].orphanCopy()
+                }
+                
+                let newEquals = EqualsModel(ExpressionModel(), ExpressionModel())
+                newEquals.replaceChildAt(plus.getChildIndex(), with: newSelf)
+                newEquals.replaceChildAt(otherSide.getChildIndex(), with: newOther)
+                equals.getParent()?.replaceChildAt(equals.getChildIndex(), with: newEquals)
             }
-        } else if let parentAsEquals = lca.getParent() as? EqualsModel {
+        } else if let equals = lca.getParent() as? EqualsModel {  // if lca's parent is an equals
+            // i don't think this case currently ever runs thanks to this useless selection model
             let otherSide: ExpressionModel
             if lca.getChildIndex() == 0 {
-                otherSide = parentAsEquals.right
+                otherSide = equals.right
             } else {
-                otherSide = parentAsEquals.left
+                otherSide = equals.left
             }
             
+            // copy-paste
             let newOther: ExpressionModel
             if let otherSideAsPlus = otherSide as? PlusModel {  // otherSide is a plus model
                 var newOtherKids = [ExpressionModel]()  // ew, other kids
-                if let lcaAsPlus = lca as? PlusModel {
-                    newOtherKids = lcaAsPlus.list + otherSideAsPlus.list
-                } else {
-                    newOtherKids = [lca.orphanCopy()] + otherSideAsPlus.list
-                }
+                newOtherKids.append(NegativeModel(lca.orphanCopy()))
+                newOtherKids.append(contentsOf: otherSideAsPlus.list)
                 newOther = PlusModel(newOtherKids)
             } else {  // otherSide is something else
                 newOther = PlusModel([NegativeModel(lca.orphanCopy()), otherSide.orphanCopy()])
             }
             
-            parentAsEquals.replaceChildAt(lca.getChildIndex(), with: AtomicModel("0"))
-            parentAsEquals.replaceChildAt(otherSide.getChildIndex(), with: newOther)
+            equals.replaceChildAt(lca.getChildIndex(), with: AtomicModel("0"))
+            equals.replaceChildAt(otherSide.getChildIndex(), with: newOther)
         }
         
         return newExpression

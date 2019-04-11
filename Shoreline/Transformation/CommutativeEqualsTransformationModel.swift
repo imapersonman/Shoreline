@@ -28,14 +28,14 @@ class CommutativeEqualsTransformationModel: TransformationModel {
     
     override func transformExpression(_ expression: ExpressionModel) -> ExpressionModel {
         let newExpression = expression.orphanCopy()
-        let map = newExpression.createPatternMap()
+        var map = newExpression.createPatternMap()
         let lca = ExpressionModel.lowestCommonAncestor((Set(map.values.joined()))) ?? newExpression
         let selectionTree = lca.toSelectionTree()
         
         if self.getMatchTuple(selectionTree) != nil {
             // guessing
-            let one = map[0]!.first!
-            let two = map[1]!.first!
+            let one = map.popFirst()!.value.first!
+            let two = map.popFirst()!.value.first!
             // orphan copy might not be necessary
             lca.replaceChildAt(one.getChildIndex(), with: two.orphanCopy())
             lca.replaceChildAt(two.getChildIndex(), with: one.orphanCopy())

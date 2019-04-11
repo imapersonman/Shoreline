@@ -9,14 +9,23 @@
 import Cocoa
 
 class SidebarItem: NSCollectionViewItem {
-    @IBOutlet weak var labelField: NSTextField!;
+    var expression = ExpressionModel()
+    var expressionView: ExpressionView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
     
-    func setLabelText(text: String) {
-        self.labelField.stringValue = text;
+    func setExpression(_ expression: ExpressionModel) {
+        if self.expressionView != nil {
+            self.expressionView?.removeFromSuperview()
+        }
+        self.expression = expression
+        self.expressionView = expression.asView()
+        self.expressionView!.setFontSize(size: 16)
+        self.expressionView!.frame.origin.x = self.view.frame.width / 2 - self.expressionView!.frame.width / 2
+        self.expressionView!.frame.origin.y = self.view.frame.height / 2 - self.expressionView!.frame.height / 2
+        self.view.addSubview(self.expressionView!)
     }
 }
